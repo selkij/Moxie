@@ -12,7 +12,7 @@ namespace SkippleOS.Shell
         /// <param name="text">The text to output</param>
         /// <param name="foregroundColor">Change foreground text color</param>
         /// <param name="backgroundColor">Change background text color</param>
-        /// <param name="type">Type of text 1:Process 2:Success 3:Error</param>
+        /// <param name="type">Type of text 1:Process 2:Success 3:Error 4:Fatal</param>
         public void Write(string text, ConsoleColor foregroundColor=ConsoleColor.White, ConsoleColor backgroundColor=ConsoleColor.Black, int type=0)
         {
             switch(type)
@@ -60,6 +60,18 @@ namespace SkippleOS.Shell
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.BackgroundColor = ConsoleColor.Black;
                     break;
+
+                //Fatal
+                case 4:
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.BackgroundColor = ConsoleColor.DarkRed;
+                    Console.Write("FATAl:");
+                    Console.ForegroundColor = foregroundColor;
+                    Console.BackgroundColor = backgroundColor;
+                    Console.Write(" " + text);
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    break;
             }
         }
 
@@ -69,7 +81,7 @@ namespace SkippleOS.Shell
         /// <param name="text">The text to output</param>
         /// <param name="foregroundColor">Change foreground text color</param>
         /// <param name="backgroundColor">Change background text color</param>
-        /// <param name="type">Type of text 1:Process 2:Success 3:Error</param>
+        /// <param name="type">Type of text 1:Process 2:Success 3:Error 4:Fatal</param>
         public void WriteLine(string text, ConsoleColor foregroundColor=ConsoleColor.White, ConsoleColor backgroundColor=ConsoleColor.Black, int type=0)
         {
             switch (type)
@@ -114,6 +126,18 @@ namespace SkippleOS.Shell
                     Console.ForegroundColor = foregroundColor;
                     Console.BackgroundColor = backgroundColor;
                     Console.Write(" " + text + "\n");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    break;
+
+                //Fatal
+                case 4:
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.BackgroundColor = ConsoleColor.DarkRed;
+                    Console.Write("FATAl:");
+                    Console.ForegroundColor = foregroundColor;
+                    Console.BackgroundColor = backgroundColor;
+                    Console.Write(" " + text);
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.BackgroundColor = ConsoleColor.Black;
                     break;

@@ -1,5 +1,6 @@
 ﻿using Sys = Cosmos.System;
 using Cosmos.System.ScanMaps;
+using System;
 
 namespace SkippleOS.Shell.Cmds.Console
 {
@@ -9,6 +10,7 @@ namespace SkippleOS.Shell.Cmds.Console
 
         public static void SetKeyboardMap()
         {
+            shell.Write("Keymap: ", ConsoleColor.Gray);
             var input = System.Console.ReadLine();
 
             switch(input)
