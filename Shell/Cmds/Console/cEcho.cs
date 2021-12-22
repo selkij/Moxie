@@ -5,10 +5,13 @@
 
         private static ShellManager shell = new ShellManager();
 
-        public static void Echo()
+        public static void Echo(string[] msg)
         {
-            var input = System.Console.ReadLine();
-            shell.Write(input);
+            for(int i = 1; i < msg.Length; i++)
+            {
+                shell.Write(msg[i]+ " ");
+            }
+            
         }
     }
 }

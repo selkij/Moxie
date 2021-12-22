@@ -17,7 +17,7 @@ namespace SkippleOS.Shell.Cmds.File
             {
                 try
                 {
-                    var file = Sys.FileSystem.VFS.VFSManager.GetFile(@"0:\" + input);
+                    var file = Sys.FileSystem.VFS.VFSManager.GetFile(ShellInfo.current_directory + input);
                     var file_stream = file.GetFileStream();
 
                     if (file_stream.CanRead)

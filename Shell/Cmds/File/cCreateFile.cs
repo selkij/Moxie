@@ -7,19 +7,15 @@ namespace SkippleOS.Shell.Cmds.File
     {
         private static ShellManager shell = new ShellManager();
 
-        public static void CreateFile()
+        public static void CreateFile(string file)
         {
             try
             {
-                VFSManager.CreateFile(@"0:\hi.txt");
-                shell.WriteLine("Done!");
-
+                VFSManager.CreateFile(@"0:\" + file);
             } catch (Exception ex)
             {
                 shell.WriteLine(ex.ToString(), type: 3);
             }
         }
-            
-
     }
 }

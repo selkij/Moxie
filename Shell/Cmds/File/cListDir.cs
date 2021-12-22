@@ -11,7 +11,7 @@ namespace SkippleOS.Shell.Cmds.File
         {
             try
             {
-                var directory_list = VFSManager.GetDirectoryListing(@"0:\");
+                var directory_list = VFSManager.GetDirectoryListing(ShellInfo.current_directory);
 
                 foreach (var directoryEntry in directory_list)
                 {

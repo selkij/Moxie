@@ -1,11 +1,13 @@
-﻿using System;
-using Sys = Cosmos.System;
+﻿using SkippleOS.Shell.Cmds.Power;
+using SkippleOS.Shell.Cmds.Console;
+using SkippleOS.Shell.Cmds.File;
+using System;
 
 namespace SkippleOS.Shell
 {
     internal class ShellManager
     {
-
+        #region Write
         /// <summary>
         /// Output text with color 
         /// </summary>
@@ -143,5 +145,84 @@ namespace SkippleOS.Shell
                     break;
             }
         }
+        #endregion
+
+        #region ExecuteCommand
+        public void ExecuteCommand(string[] cmd)
+        {
+            var cName = cmd[0];
+
+            switch (cName)
+            {
+                #region Power
+                case "shutdown":
+                case "sd":
+                    cShutdown.Shutdown();
+                    break;
+
+                case "reboot":
+                case "rb":
+                    cReboot.Reboot();
+                    break;
+                #endregion
+
+                #region Console
+                case "clear":
+                case "cls":
+                    cClear.Clear();
+                    break;
+
+                case "whoami":
+                    cWhoAmI.WhoAmI();
+                    break;
+
+                case "echo":
+                    cEcho.Echo(cmd);
+                    break;
+
+                case "setKeyboardMap":
+                    cKeyboardMap.SetKeyboardMap();
+                    break;
+                #endregion
+
+                #region File
+                case "cd":
+                    cCD.CD(cmd[1]);
+                    break;
+
+                case "listdir":
+                case "ls":
+                    cListDir.ListDir();
+                    break;
+
+                case "mkfile":
+                    cCreateFile.CreateFile(cmd[1]);
+                    break;
+
+                case "mkdir":
+                    cCreateDir.CreateDir(cmd[1]);
+                    break;
+
+                case "rmfile":
+                    cRemoveFile.RemoveFile(cmd[1]);
+                    break;
+
+                case "rmdir":
+                    if(cmd[2] == "")
+                    {
+                        cRemoveDir.RemoveDir(cmd[1]);
+                    } else if(cmd[2] == "-r")
+                    {
+                        cRemoveDir.RemoveDirRecursively(cmd[1]);
+                    }
+                    break;
+                #endregion
+
+                default:
+                    WriteLine("Unknown command. Please type \'help\' to see the commands", type: 3);
+                    break;
+            }
+        }
+        #endregion
     }
 }
