@@ -5,7 +5,7 @@ namespace SkippleOS.Shell.Cmds.Console
     internal class cWhoAmI
     {
 
-        private static ShellManager shell = new ShellManager();
+        private static ShellManager shell = new();
 
         public static void WhoAmI()
         {

@@ -5,13 +5,14 @@ namespace SkippleOS.Shell.Cmds.File
 {
     class cCreateFile
     {
-        private static ShellManager shell = new ShellManager();
+        private static ShellManager shell = new();
 
         public static void CreateFile(string file)
         {
             try
             {
-                VFSManager.CreateFile(@"0:\" + file);
+                VFSManager.CreateFile(Kernel.current_directory + @"\" + file);
+                shell.WriteLine("Created file " + file);
             } catch (Exception ex)
             {
                 shell.WriteLine(ex.ToString(), type: 3);

@@ -2,6 +2,8 @@
 using SkippleOS.Shell.Cmds.Console;
 using SkippleOS.Shell.Cmds.File;
 using System;
+using Cosmos.System.FileSystem.Listing;
+using Cosmos.System.FileSystem.VFS;
 
 namespace SkippleOS.Shell
 {
@@ -181,13 +183,23 @@ namespace SkippleOS.Shell
                     break;
 
                 case "setKeyboardMap":
-                    cKeyboardMap.SetKeyboardMap();
+                    cKeyboardMap.SetKeyboardMap(cmd[1]);
+                    break;
+
+                case "help":
+                    cHelp.Help();
                     break;
                 #endregion
 
                 #region File
                 case "cd":
                     cCD.CD(cmd[1]);
+                    if(cmd[1] == ".." && Kernel.current_directory != @"0:\")
+                    {
+                        DirectoryEntry folder = VFSManager.GetDirectory(Kernel.current_directory);
+                        Kernel.current_directory = folder.mParent.mFullPath;
+                    }
+                    
                     break;
 
                 case "listdir":
@@ -208,12 +220,16 @@ namespace SkippleOS.Shell
                     break;
 
                 case "rmdir":
-                    if(cmd[2] == "")
+                    cRemoveDir.RemoveDirRecursively(cmd[1]);
+                    break;
+
+                case "cat":
+                    if(cmd[1] == null)
                     {
-                        cRemoveDir.RemoveDir(cmd[1]);
-                    } else if(cmd[2] == "-r")
+                        WriteLine("Please choose a file to output", type: 3);
+                    }else
                     {
-                        cRemoveDir.RemoveDirRecursively(cmd[1]);
+                        cCat.Cat(cmd[1]);
                     }
                     break;
                 #endregion

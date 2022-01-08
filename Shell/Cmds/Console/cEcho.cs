@@ -3,7 +3,7 @@
     internal class cEcho
     {
 
-        private static ShellManager shell = new ShellManager();
+        private static ShellManager shell = new();
 
         public static void Echo(string[] msg)
         {
