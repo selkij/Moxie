@@ -1,9 +1,7 @@
 ﻿using System;
 using Sys = Cosmos.System;
 using Cosmos.System.FileSystem.VFS;
-using SkippleOS.Shell.Cmds.Power;
-using SkippleOS.Shell.Cmds.Console;
-using SkippleOS.Shell.Cmds.File;
+
 using SkippleOS.Shell;
 
 namespace SkippleOS
@@ -44,11 +42,14 @@ namespace SkippleOS
                 VFSManager.RegisterVFS(fs);
             } catch(Exception ex)
             {
+                if(ex is IndexOutOfRangeException)
+                {
+                    shell.Write(ex.ToString(), type: 3);
+                }
                 shell.Write(ex.ToString(), type: 3);
                 Console.ReadKey();
                 Stop();
-            }
-
+            } 
             shell.WriteLine("File system initiated", type: 2);
 
             #region Booted Section
@@ -105,9 +106,9 @@ namespace SkippleOS
             try
             {
                 Start(name);
+
                 input = Console.ReadLine();
-                args = input.Split(' ');
-                // string firstarg = args[1];
+                shell.ExecuteCommand(input.Split(' '));
             } catch (Exception ex)
             {
                 Console.Clear();
@@ -116,50 +117,7 @@ namespace SkippleOS
                 Stop();
             }
 
-            switch (input)
-            {
-                #region Power
-                case "shutdown":
-                case "sd":
-                    cShutdown.Shutdown();
-                    break;
-
-                case "reboot":
-                case "rb":
-                    cReboot.Reboot();
-                    break;
-                #endregion
-
-                #region Console
-                case "clear":
-                case "cls":
-                    cClear.Clear();
-                    break;
-
-                case "whoami":
-                    cWhoAmI.WhoAmI();
-                    break;
-
-                case "setKeyboardMap":
-                    cKeyboardMap.SetKeyboardMap();
-                    break;
-                #endregion
-
-                #region File
-                case "listdir":
-                case "ls":
-                    cListDir.ListDir();
-                    break;
-
-                case "mkfile":
-                    cCreateFile.CreateFile();
-                    break;
-                #endregion
-
-                default:
-                    shell.WriteLine("Unknown command. Please type \'help\' to see the commands", type: 3);
-                    break;
-            }
+            
         }
         
         public void Start(string _name)
