@@ -5,13 +5,13 @@ namespace SkippleOS.Shell.Cmds.File
 {
     class cListDir
     {
-        private static ShellManager shell = new ShellManager();
+        private static ShellManager shell = new();
 
         public static void ListDir()
         {
             try
             {
-                var directory_list = VFSManager.GetDirectoryListing(@"0:\");
+                var directory_list = VFSManager.GetDirectoryListing(Kernel.current_directory);
 
                 foreach (var directoryEntry in directory_list)
                 {

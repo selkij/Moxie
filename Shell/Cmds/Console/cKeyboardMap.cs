@@ -6,14 +6,12 @@ namespace SkippleOS.Shell.Cmds.Console
 {
     internal class cKeyboardMap
     {
-        private static ShellManager shell = new ShellManager();
+        private static ShellManager shell = new();
 
-        public static void SetKeyboardMap()
+        public static void SetKeyboardMap(string keyMap)
         {
-            shell.Write("Keymap: ", ConsoleColor.Gray);
-            var input = System.Console.ReadLine();
 
-            switch(input)
+            switch(keyMap)
             {
                 case "en_US":
                     if(ShellInfo.langSelected != "en_US")
