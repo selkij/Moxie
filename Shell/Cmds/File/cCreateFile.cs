@@ -1,9 +1,9 @@
 ﻿using Cosmos.System.FileSystem.VFS;
 using System;
 
-namespace SkippleOS.Shell.Cmds.File
+namespace ProjectOrizonOS.Shell.Cmds.File
 {
-    class cCreateFile
+    internal class cCreateFile
     {
         private static ShellManager shell = new();
 
@@ -13,7 +13,8 @@ namespace SkippleOS.Shell.Cmds.File
             {
                 VFSManager.CreateFile(Kernel.current_directory + @"\" + file);
                 shell.WriteLine("Created file " + file);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 shell.WriteLine(ex.ToString(), type: 3);
             }

@@ -2,12 +2,11 @@
 using System;
 using Cosmos.System.FileSystem.Listing;
 
-namespace SkippleOS.Shell.Cmds.File
+namespace ProjectOrizonOS.Shell.Cmds.File
 {
     internal class cCreateDir
     {
-
-        private static ShellManager shell = new ();
+        private static ShellManager shell = new();
 
         public static void CreateDir(string file)
         {

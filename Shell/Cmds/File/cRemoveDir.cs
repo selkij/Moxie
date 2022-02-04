@@ -3,11 +3,10 @@ using Cosmos.System.FileSystem.VFS;
 using System;
 using System.IO;
 
-namespace SkippleOS.Shell.Cmds.File
+namespace ProjectOrizonOS.Shell.Cmds.File
 {
     internal class cRemoveDir
     {
-
         private static ShellManager shell = new();
 
         public static void RemoveDir(string dir)
@@ -15,11 +14,12 @@ namespace SkippleOS.Shell.Cmds.File
             try
             {
                 DirectoryEntry temp = VFSManager.GetDirectory(Kernel.current_directory + dir);
-            } catch(ArgumentNullException ex)
+            }
+            catch (ArgumentNullException ex)
             {
                 shell.WriteLine(ex + " Please specify a valid directory to delete", type: 3);
             }
-            
+
             try
             {
                 var directory_list = Directory.GetFiles(Kernel.current_directory + dir + @"\");
@@ -27,11 +27,12 @@ namespace SkippleOS.Shell.Cmds.File
                 if (directory_list.Length == 0)
                 {
                     VFSManager.DeleteDirectory(Kernel.current_directory + dir, false);
-                } else
+                }
+                else
                 {
                     shell.WriteLine("Directory is not empty, cannot delete. use -r argument to delete the folder recursively");
                 }
-                
+
             }
             catch (Exception ex)
             {

@@ -2,11 +2,10 @@
 using Cosmos.System.FileSystem.VFS;
 using System;
 
-namespace SkippleOS.Shell.Cmds.File
+namespace ProjectOrizonOS.Shell.Cmds.File
 {
     internal class cRemoveFile
     {
-
         private static ShellManager shell = new();
 
         public static void RemoveFile(string file)

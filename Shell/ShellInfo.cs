@@ -1,6 +1,6 @@
-﻿namespace SkippleOS.Shell
+﻿namespace ProjectOrizonOS.Shell
 {
-    public class ShellInfo
+    internal class ShellInfo
     {
         //Primary version Second version Revision BuildNumber
         public static string version = "1.0.0.1";

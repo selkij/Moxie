@@ -1,9 +1,9 @@
 ﻿using Cosmos.System.FileSystem.VFS;
 using System;
 
-namespace SkippleOS.Shell.Cmds.File
+namespace ProjectOrizonOS.Shell.Cmds.File
 {
-    class cListDir
+    internal class cListDir
     {
         private static ShellManager shell = new();
 

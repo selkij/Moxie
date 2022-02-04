@@ -1,8 +1,8 @@
 ﻿using Sys = Cosmos.System;
 
-namespace SkippleOS.Shell.Cmds.Power
+namespace ProjectOrizonOS.Shell.Cmds.Power
 {
-    class cReboot
+    internal class cReboot
     {
         public static void Reboot()
         {

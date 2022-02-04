@@ -1,6 +1,6 @@
-﻿using SkippleOS.Shell;
+﻿using ProjectOrizonOS.Shell;
 
-namespace SkippleOS.Shell.Cmds.Console
+namespace ProjectOrizonOS.Shell.Cmds.Console
 {
     internal class cWhoAmI
     {

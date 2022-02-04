@@ -2,7 +2,7 @@
 using Cosmos.System.ScanMaps;
 using System;
 
-namespace SkippleOS.Shell.Cmds.Console
+namespace ProjectOrizonOS.Shell.Cmds.Console
 {
     internal class cKeyboardMap
     {

@@ -1,14 +1,18 @@
-﻿using SkippleOS.Shell.Cmds.Power;
-using SkippleOS.Shell.Cmds.Console;
-using SkippleOS.Shell.Cmds.File;
-using System;
+﻿using System;
+using ProjectOrizonOS.Shell.Cmds.Power;
+using ProjectOrizonOS.Shell.Cmds.Console;
+using ProjectOrizonOS.Shell.Cmds.File;
 using Cosmos.System.FileSystem.Listing;
 using Cosmos.System.FileSystem.VFS;
+using Cosmos.System.Network.Config;
 
-namespace SkippleOS.Shell
+namespace ProjectOrizonOS.Shell
 {
     internal class ShellManager
     {
+
+        private ShellManager shell = new();
+
         #region Write
         /// <summary>
         /// Output text with color 
@@ -17,9 +21,9 @@ namespace SkippleOS.Shell
         /// <param name="foregroundColor">Change foreground text color</param>
         /// <param name="backgroundColor">Change background text color</param>
         /// <param name="type">Type of text 1:Process 2:Success 3:Error 4:Fatal</param>
-        public void Write(string text, ConsoleColor foregroundColor=ConsoleColor.White, ConsoleColor backgroundColor=ConsoleColor.Black, int type=0)
+        public void Write(string text, ConsoleColor foregroundColor = ConsoleColor.White, ConsoleColor backgroundColor = ConsoleColor.Black, int type = 0)
         {
-            switch(type)
+            switch (type)
             {
                 case 0:
                     Console.ForegroundColor = foregroundColor;
@@ -86,7 +90,7 @@ namespace SkippleOS.Shell
         /// <param name="foregroundColor">Change foreground text color</param>
         /// <param name="backgroundColor">Change background text color</param>
         /// <param name="type">Type of text 1:Process 2:Success 3:Error 4:Fatal</param>
-        public void WriteLine(string text, ConsoleColor foregroundColor=ConsoleColor.White, ConsoleColor backgroundColor=ConsoleColor.Black, int type=0)
+        public void WriteLine(string text, ConsoleColor foregroundColor = ConsoleColor.White, ConsoleColor backgroundColor = ConsoleColor.Black, int type = 0)
         {
             switch (type)
             {
@@ -194,12 +198,12 @@ namespace SkippleOS.Shell
                 #region File
                 case "cd":
                     cCD.CD(cmd[1]);
-                    if(cmd[1] == ".." && Kernel.current_directory != @"0:\")
+                    if (cmd[1] == ".." && Kernel.current_directory != @"0:\")
                     {
                         DirectoryEntry folder = VFSManager.GetDirectory(Kernel.current_directory);
                         Kernel.current_directory = folder.mParent.mFullPath;
                     }
-                    
+
                     break;
 
                 case "listdir":
@@ -224,13 +228,19 @@ namespace SkippleOS.Shell
                     break;
 
                 case "cat":
-                    if(cmd[1] == null)
+                    if (cmd[1] == null)
                     {
                         WriteLine("Please choose a file to output", type: 3);
-                    }else
+                    }
+                    else
                     {
                         cCat.Cat(cmd[1]);
                     }
+                    break;
+
+                case "ipinfo":
+                    
+                    shell.WriteLine(NetworkConfig.CurrentConfig.Value.IPAddress.ToString());
                     break;
                 #endregion
 

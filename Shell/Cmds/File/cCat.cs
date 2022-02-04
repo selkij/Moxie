@@ -2,7 +2,7 @@
 using System.Text;
 using Sys = Cosmos.System;
 
-namespace SkippleOS.Shell.Cmds.File
+namespace ProjectOrizonOS.Shell.Cmds.File
 {
     internal class cCat
     {
@@ -20,7 +20,8 @@ namespace SkippleOS.Shell.Cmds.File
                     byte[] text_to_read = new byte[file_stream.Length];
                     file_stream.Read(text_to_read, 0, (int)file_stream.Length);
                     shell.WriteLine(Encoding.Default.GetString(text_to_read));
-                } else
+                }
+                else
                 {
                     shell.WriteLine("SkippleOS is needing read permissions for this file.", type: 3);
                 }
