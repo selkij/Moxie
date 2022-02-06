@@ -92,6 +92,7 @@
       <PackageReference Include="Cosmos.Core" Version="0.1.0-localbuild20220204074509" />
       <PackageReference Include="Cosmos.Debug.Kernel" Version="0.1.0-localbuild20220204074509" />
       <PackageReference Include="Cosmos.System2" Version="0.1.0-localbuild20220204074509" />
+
     </ItemGroup>
 
 </Project>

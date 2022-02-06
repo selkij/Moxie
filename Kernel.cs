@@ -44,6 +44,7 @@ namespace ProjectOrizonOS
             }
             shell.WriteLine("File system initiated", type: 2);
 
+
             // Check if the network connection correctly ethablished via DHCP
             shell.WriteLine("Initiating Network connection via DHCP...", type: 1);
             try
