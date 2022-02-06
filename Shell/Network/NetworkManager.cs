@@ -8,21 +8,19 @@ namespace ProjectOrizonOS.Shell.Network
     {
         private ShellManager shell = new();
 
-        public DHCPClient xClient = new();
-
-        public string DCHPConnect()
+        public void DCHPConnect()
         {
-            try
+            var xClient = new DHCPClient();
+            if (xClient.SendDiscoverPacket() != -1)
             {
-                xClient.SendDiscoverPacket();
-                shell.WriteLine("Network connection ethablished via DHCP with IPv4: " + NetworkConfig.CurrentConfig.Value.IPAddress.ToString(), type:2);
-                return null;
-            } catch (Exception ex)
+                xClient.Close();
+                shell.WriteLine("Configuration applied! Your local IPv4 Address is .");
+            }
+            else
             {
-                shell.WriteLine(ex.ToString(), type: 3);
-                return ex.ToString();
+                xClient.Close();
+                shell.WriteLine("DHCP Discover failed. Can't apply dynamic IPv4 address.", type: 3);
             }
         }
-
     }
 }

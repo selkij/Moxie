@@ -5,6 +5,7 @@ using ProjectOrizonOS.Shell;
 using System.Text;
 using Cosmos.System.Network.Config;
 using ProjectOrizonOS.Shell.Network;
+using ProjectOrizonOS.Shell.Cmds;
 
 namespace ProjectOrizonOS
 {
@@ -17,6 +18,8 @@ namespace ProjectOrizonOS
         public static string current_directory = @"0:\";
 
         private ShellManager shell = new();
+
+        private CommandManager cManager = new();
 
         private NetworkManager networkManager = new();
 
@@ -46,7 +49,9 @@ namespace ProjectOrizonOS
             try
             {
                 networkManager.DCHPConnect();
-            } catch(Exception ex)
+                shell.WriteLine("Connected to Network", type: 2);
+            }
+            catch (Exception ex)
             {
                 shell.WriteLine(ex.ToString(), type: 3);
             }
@@ -131,7 +136,7 @@ namespace ProjectOrizonOS
                 Start(name);
 
                 input = Console.ReadLine();
-                shell.ExecuteCommand(input.Split(' '));
+                cManager.ExecuteCommand(input.Split(' '));
             }
             catch (Exception ex)
             {
