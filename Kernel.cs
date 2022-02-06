@@ -53,7 +53,6 @@ namespace SkippleOS
             shell.WriteLine("File system initiated", type: 2);
 
             #region Booted Section
-            ShellInfo.isRunning = true;
 
             shell.WriteLine($"SkippleOS {ShellInfo.version} booted.", type: 2);
             shell.WriteLine("Press a key to continue", ConsoleColor.Black, ConsoleColor.White);
