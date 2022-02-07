@@ -79,8 +79,13 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="Shell\Cmds\Network\**" />
+      <EmbeddedResource Remove="Shell\Cmds\Network\**" />
+      <None Remove="Shell\Cmds\Network\**" />
+    </ItemGroup>
+
+    <ItemGroup>
       <Folder Include="Shell\Cmds\Console\" />
-      <Folder Include="Shell\Cmds\Network\" />
       <Folder Include="Shell\Graphics\" />
     </ItemGroup>
 
