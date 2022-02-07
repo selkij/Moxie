@@ -94,4 +94,10 @@
 
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="MoonSharp.Interpreter">
+        <HintPath>C:\Users\kevan\OneDrive\Bureau\MoonSharp.Interpreter.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>

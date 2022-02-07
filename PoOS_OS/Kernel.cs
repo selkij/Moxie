@@ -6,6 +6,7 @@ using System.Text;
 using Cosmos.System.Network.Config;
 using ProjectOrizonOS.Shell.Network;
 using ProjectOrizonOS.Shell.Cmds;
+using MoonSharp.Interpreter;
 
 namespace ProjectOrizonOS
 {
@@ -25,6 +26,10 @@ namespace ProjectOrizonOS
 
         protected override void BeforeRun()
         {
+            string script = "print(\"Hello World from MoonSharp Lua interpreter!\")";
+            DynValue res = Script.RunString(script);
+            shell.WriteLine(res.ToString());
+
             // Initiating file system
             try
             {
