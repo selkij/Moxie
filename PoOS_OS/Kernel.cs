@@ -34,11 +34,7 @@ namespace ProjectOrizonOS
             }
             catch (Exception ex)
             {
-                if (ex is IndexOutOfRangeException)
-                {
-                    shell.Write(ex.ToString(), type: 3);
-                }
-                shell.Write(ex.ToString(), type: 3);
+                shell.Write(ex.ToString(), type: 4);
                 Console.ReadKey();
                 Stop();
             }
@@ -47,10 +43,17 @@ namespace ProjectOrizonOS
 
             // Check if the network connection correctly ethablished via DHCP
             shell.WriteLine("Initiating Network connection via DHCP...", type: 1);
+            bool skip = true;
             try
             {
-                networkManager.DCHPConnect();
-                shell.WriteLine("Connected to Network", type: 2);
+                if(skip == false)
+                {
+                    networkManager.DCHPConnect();
+                } else
+                {
+                    shell.WriteLine("Process Skipped!", type: 1);
+                }  
+                
             }
             catch (Exception ex)
             {

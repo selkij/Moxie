@@ -6,13 +6,15 @@ using Cosmos.System.FileSystem.VFS;
 using Cosmos.System.Network.Config;
 using System;
 using Cosmos.System.Network.IPv4.UDP.DHCP;
+using ProjectOrizonOS.Shell.Cmds.Network;
+using ProjectOrizonOS.Shell.Network;
 
 namespace ProjectOrizonOS.Shell.Cmds
 {
     class CommandManager
     {
         private ShellManager shell = new();
-
+        private NetworkManager networkManager = new();
         public void ExecuteCommand(string[] cmd)
         {
             var cName = cmd[0];
@@ -87,7 +89,7 @@ namespace ProjectOrizonOS.Shell.Cmds
                     break;
 
                 case "cat":
-                    if (cmd[1] == null)
+                    if (string.IsNullOrWhiteSpace(cmd[1]))
                     {
                         shell.WriteLine("Please choose a file to output", type: 3);
                     }
@@ -97,6 +99,10 @@ namespace ProjectOrizonOS.Shell.Cmds
                     }
                     break;
 
+
+                #endregion
+
+                #region Network
                 case "ipinfo":
                     try
                     {
@@ -107,6 +113,16 @@ namespace ProjectOrizonOS.Shell.Cmds
                         shell.WriteLine(ex.ToString(), type: 3);
                     }
 
+                    break;
+
+                case "ipconfig":
+                    if (!string.IsNullOrWhiteSpace(cmd[1]) && cmd[1] == "/dhcp")
+                    {
+                        networkManager.DCHPConnect();
+                    } else if (!string.IsNullOrWhiteSpace(cmd[1]) && !string.IsNullOrWhiteSpace(cmd[2]) && cmd[1] == "/manual")
+                    {
+                        networkManager.ManualConnect(cmd[2]);
+                    }
                     break;
                 #endregion
 

@@ -1,5 +1,8 @@
-﻿using Cosmos.System.Network.Config;
+﻿using Cosmos.HAL;
+using Cosmos.System.Network.Config;
+using Cosmos.System.Network.IPv4;
 using Cosmos.System.Network.IPv4.UDP.DHCP;
+using ProjectOrizonOS.Shell.Cmds.Network;
 using System;
 
 namespace ProjectOrizonOS.Shell.Network
@@ -11,15 +14,34 @@ namespace ProjectOrizonOS.Shell.Network
         public void DCHPConnect()
         {
             var xClient = new DHCPClient();
-            if (xClient.SendDiscoverPacket() != -1)
+
+            try
             {
+                xClient.SendDiscoverPacket();
                 xClient.Close();
-                shell.WriteLine("Configuration applied! Your local IPv4 Address is .");
+            } catch (Exception ex)
+            {
+                shell.WriteLine("DHCP Discover failed. Can't apply dynamic IPv4 address. " + ex.ToString(), type: 3);
             }
-            else
+        }
+
+        public void ManualConnect(string networkDevice)
+        {
+            try
             {
-                xClient.Close();
-                shell.WriteLine("DHCP Discover failed. Can't apply dynamic IPv4 address.", type: 3);
+                NetworkDevice nic = NetworkDevice.GetDeviceByName(networkDevice);
+
+                IPConfig.Enable(nic, new Address(192, 168, 1, 69), new Address(255, 255, 255, 0), new Address(192, 168, 1, 254));
+
+                shell.WriteLine("Applied! IPv4: " + NetworkConfig.CurrentConfig.Value.IPAddress.ToString() + " subnet mask: " + NetworkConfig.CurrentConfig.Value.SubnetMask.ToString() + " gateway: " + NetworkConfig.CurrentConfig.Value.DefaultGateway.ToString());
+            } catch (Exception ex)
+            {
+                if(ex.Equals(typeof(IndexOutOfRangeException))) {
+                    cIpConfig.Help();
+                }else
+                {
+                    shell.WriteLine(ex.ToString(), type: 3);
+                }
             }
         }
     }
