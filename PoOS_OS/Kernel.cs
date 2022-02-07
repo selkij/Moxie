@@ -3,7 +3,6 @@ using Sys = Cosmos.System;
 using Cosmos.System.FileSystem.VFS;
 using ProjectOrizonOS.Shell;
 using System.Text;
-using Cosmos.System.Network.Config;
 using ProjectOrizonOS.Shell.Network;
 using ProjectOrizonOS.Shell.Cmds;
 using MoonSharp.Interpreter;

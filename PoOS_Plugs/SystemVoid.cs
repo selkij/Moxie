@@ -7,8 +7,8 @@ using Sys = System;
 namespace PoOS_Plugs
 {
 
-    [Plug(Target = typeof(Sys.Void))]
-    public struct Void
+    [Plug(Target = typeof(global::System.Void))]
+    public class Class1
     {
     }
 }
