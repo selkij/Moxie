@@ -64,7 +64,7 @@
         <Profile>VMware</Profile>
         <Description>Use VMware Player or Workstation to deploy and debug.</Description>
         <PxeInterface>192.168.0.8</PxeInterface>
-        <DebugEnabled>False</DebugEnabled>
+        <DebugEnabled>True</DebugEnabled>
         <VMWareEdition>Player</VMWareEdition>
         <EnableBochsDebug>True</EnableBochsDebug>
         <StartBochsDebugGui>False</StartBochsDebugGui>
@@ -79,19 +79,36 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <None Remove="Kernel.cs~RF58f66af.TMP" />
+      <None Remove="Resources\cursor.bmp" />
+      <None Remove="Resources\DefaultWallpaper.bmp" />
+      <None Remove="Resources\wallpaper1024-768.bmp" />
+      <None Remove="Resources\wallpaper1920-1080.bmp" />
+      <None Remove="wp.bmp" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="Resources\cursor.bmp" />
+      <EmbeddedResource Include="Resources\wallpaper1024-768.bmp" />
+      <EmbeddedResource Include="Resources\wallpaper1920-1080.bmp" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Resource Include="Resources\DefaultWallpaper.bmp" />
+    </ItemGroup>
+
+    <ItemGroup>
       <Folder Include="Shell\Cmds\Console\" />
       <Folder Include="Shell\Graphics\" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Cosmos.Build" Version="0.1.0-localbuild20220204074457">
+      <PackageReference Include="Cosmos.Build" Version="0.1.0-localbuild20220210100044">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
-      <PackageReference Include="Cosmos.Core" Version="0.1.0-localbuild20220204074509" />
-      <PackageReference Include="Cosmos.Debug.Kernel" Version="0.1.0-localbuild20220204074509" />
-      <PackageReference Include="Cosmos.System2" Version="0.1.0-localbuild20220204074509" />
-
+      <PackageReference Include="Cosmos.Debug.Kernel" Version="0.1.0-localbuild20220210100104" />
+      <PackageReference Include="Cosmos.System2" Version="0.1.0-localbuild20220210100104" />
     </ItemGroup>
 
 </Project>
