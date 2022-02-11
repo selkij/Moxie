@@ -11,21 +11,22 @@ namespace ProjectOrizonOS
 {
     public class Kernel : Sys.Kernel
     {
+        //User Properties
         public string name { get; set; }
         public string input { get; set; }
 
+        //vFS
         private Sys.FileSystem.CosmosVFS fs;
         public static string current_directory = @"0:\";
 
+        //Instantiate
         private ShellManager shell = new();
-
         private CommandManager cManager = new();
-
         private NetworkManager networkManager = new();
 
         protected override void BeforeRun()
         {
-            // Initiating file system
+            #region vFS
             try
             {
                 shell.WriteLine("Initiating file system...", type: 1);
@@ -39,9 +40,9 @@ namespace ProjectOrizonOS
                 Stop();
             }
             shell.WriteLine("File system initiated", type: 2);
+            #endregion
 
-
-            // Check if the network connection correctly ethablished via DHCP
+            #region DHCP
             shell.WriteLine("Initiating Network connection via DHCP...", type: 1);
             bool skip = true;
             try
@@ -59,6 +60,7 @@ namespace ProjectOrizonOS
             {
                 shell.WriteLine(ex.ToString(), type: 3);
             }
+            #endregion
 
             #region Booted Section
             shell.WriteLine($"ProjectOrizonOS {ShellInfo.version} DEV channel booted.", type: 2);
