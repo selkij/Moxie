@@ -1,10 +1,4 @@
 ﻿using System;
-using ProjectOrizonOS.Shell.Cmds.Power;
-using ProjectOrizonOS.Shell.Cmds.Console;
-using ProjectOrizonOS.Shell.Cmds.File;
-using Cosmos.System.FileSystem.Listing;
-using Cosmos.System.FileSystem.VFS;
-using Cosmos.System.Network.Config;
 
 namespace ProjectOrizonOS.Shell
 {
@@ -146,6 +140,36 @@ namespace ProjectOrizonOS.Shell
                     Console.Write(" " + text);
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.BackgroundColor = ConsoleColor.Black;
+                    break;
+            }
+        }
+        #endregion
+
+        #region Logs
+
+        /// <summary>
+        /// Log only used for booting
+        /// </summary>
+        /// <param name="text">Text to output</param>
+        /// <param name="type">Type of log. 1:PROCESS 2:DONE 3:FAILED</param>
+        public void Log(string text, int type)
+        {
+            switch(type)
+            {
+                case 1:
+                    Write("[ ");
+                    Write("PROCESS", ConsoleColor.Blue);
+                    Write(" ] " + text + "\n");
+                    break;
+                case 2:
+                    Write("[ ");
+                    Write("DONE", ConsoleColor.Green);
+                    Write(" ] " + text + "\n");
+                    break;
+                case 3:
+                    Write("[ ");
+                    Write("FAILED", ConsoleColor.Red);
+                    Write(" ] " + text + "\n");
                     break;
             }
         }
