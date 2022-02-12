@@ -5,6 +5,7 @@ using ProjectOrizonOS.Shell;
 using System.Text;
 using ProjectOrizonOS.Shell.Network;
 using ProjectOrizonOS.Shell.Cmds;
+using ProjectOrizonOS.Interpreter;
 
 namespace ProjectOrizonOS
 {
@@ -16,11 +17,13 @@ namespace ProjectOrizonOS
 
         //vFS
         public static string current_directory = @"0:\";
+        public static string current_volume = @"0:\";
 
         //Instantiate
         private ShellManager shell = new();
         private Initializer init = new();
         private CommandManager cManager = new();
+        private skpParse skpParser = new();
 
         protected override void BeforeRun()
         {
@@ -36,6 +39,20 @@ namespace ProjectOrizonOS
             #endregion
 
             #region Login section
+            if (VFSManager.FileExists(@"0:\cfg.skp"))
+            {
+                try
+                {
+                    ShellInfo.firstRunning = false;
+                    skpParser.Execute(file:"cfg.skp");
+                } catch(Exception ex)
+                {
+                    shell.WriteLine(ex.ToString(), type: 4);
+                    Console.ReadKey();
+                    Sys.Power.Shutdown();
+                }
+            }
+
             if (ShellInfo.firstRunning)
             {
                 shell.WriteLine("First time starting ProjectOrizonOS. Creating user...", type: 1);
@@ -51,7 +68,10 @@ namespace ProjectOrizonOS
                     case "y":
                     case "oui":
                     case "o":
-                        bool exception = false;
+
+                        shell.WriteLine("Machine name?", type: 1);
+                        string MName = Console.ReadLine();
+                        ShellInfo.machineName = MName;
 
                         try
                         {
@@ -62,20 +82,15 @@ namespace ProjectOrizonOS
 
                             if (cfg_file_stream.CanWrite)
                             {
-                                byte[] cfg_output = Encoding.ASCII.GetBytes($"name: {name}\nkeyMap: {ShellInfo.langSelected}");
+                                byte[] cfg_output = Encoding.ASCII.GetBytes($"name={name}\nkeyMap={ShellInfo.langSelected}\nmachineName={ShellInfo.machineName}");
                                 cfg_file_stream.Write(cfg_output, 0, cfg_output.Length);
                             }
 
-                            exception = true;
+                            ShellInfo.user = name;
                         }
                         catch (Exception ex)
                         {
                             shell.WriteLine(ex.ToString(), type: 3);
-                        }
-
-                        if (exception)
-                        {
-                            ShellInfo.user = name;
                         }
 
                         shell.WriteLine("User created!", type: 2);
@@ -90,15 +105,11 @@ namespace ProjectOrizonOS
                         break;
                     default:
                         ShellInfo.user = name;
-                        ShellInfo.firstRunning = false;
+                        shell.WriteLine("User created!", type: 2);
                         break;
                 }
-
-                shell.WriteLine("Registered user!", type: 2);
-                shell.WriteLine("Machine name?", type:1);
-                string MName = Console.ReadLine();
-
-                ShellInfo.machineName = MName;
+                
+                ShellInfo.firstRunning = false;
             }
             #endregion
 
@@ -109,7 +120,7 @@ namespace ProjectOrizonOS
         {
             try
             {
-                Start(name);
+                Start(ShellInfo.user);
 
                 input = Console.ReadLine();
                 cManager.ExecuteCommand(input.Split(' '));
