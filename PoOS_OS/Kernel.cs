@@ -41,8 +41,8 @@ namespace ProjectOrizonOS
         Pen gray = new(Color.Gray);
 
         //Screen Res
-        public static uint screenWidth = 1024;
-        public static uint screenHeight = 768;
+        public static uint screenWidth = 1920;
+        public static uint screenHeight = 1080;
 
         //Mouse state
         public static bool pressed;
@@ -200,7 +200,7 @@ namespace ProjectOrizonOS
                     canvas.DrawFilledRectangle(topPen, 0, 0, (int)screenWidth, 20);
                     canvas.DrawFilledRectangle(gray, (int)screenWidth / 2 - 30, (int)screenHeight - 40, 100, 40);
 
-                    canvas.DrawString($"{RTC.Hour}:{RTC.Minute}", PCScreenFont.Default, textPen, new Sys.Graphics.Point((int) screenWidth - 70, 3));
+                    canvas.DrawString($"{RTC.Hour}:{RTC.Minute}.{RTC.Second}", PCScreenFont.Default, textPen, new Sys.Graphics.Point((int) screenWidth - 70, 3));
 
                     DrawCursor(Sys.MouseManager.X, Sys.MouseManager.Y);
 
