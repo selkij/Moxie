@@ -106,7 +106,11 @@ namespace ProjectOrizonOS.Shell.Cmds
                 case "ipinfo":
                     try
                     {
-                        shell.WriteLine(NetworkConfig.CurrentConfig.Value.IPAddress.ToString());
+                        string ip = NetworkConfig.CurrentConfig.Value.IPAddress.ToString();
+                        if(ip != "<Object.ToString not yet implemented!>")
+                        {
+                            shell.WriteLine(ip);
+                        }
                     }
                     catch (Exception ex)
                     {
