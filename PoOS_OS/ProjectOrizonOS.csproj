@@ -14,7 +14,7 @@
         <IgnoreDebugStubAttribute>False</IgnoreDebugStubAttribute>
         <ISOFile>bin\Debug\net5.0\ProjectOrizonOS.iso</ISOFile>
         <CompileVBEMultiboot>False</CompileVBEMultiboot>
-        <ExtractMapFile>False</ExtractMapFile>
+        <ExtractMapFile>True</ExtractMapFile>
         <VMware_StackCorruptionDetectionEnabled>True</VMware_StackCorruptionDetectionEnabled>
         <VMware_StackCorruptionDetectionLevel>MethodFooters</VMware_StackCorruptionDetectionLevel>
         <VMware_Description>Use VMware Player or Workstation to deploy and debug.</VMware_Description>

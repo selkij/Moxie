@@ -13,17 +13,14 @@ namespace ProjectOrizonOS.Shell.Cmds.File
             try
             {
                 DirectoryEntry folder = VFSManager.GetDirectory($@"{Kernel.current_directory}{aPath}\");
-                if (!string.IsNullOrWhiteSpace(folder.mFullPath))
+                if (folder.mFullPath != "")
                 {
                     if (aPath.StartsWith("\"") && aPath.EndsWith("\"")) 
                     {
                         shell.WriteLine("Not implemented.",type: 3);
                     } else
                     {
-                        if(Kernel.current_directory != Kernel.current_volume)
-                        {
-                            Kernel.current_directory = folder.mFullPath;
-                        }
+                        Kernel.current_directory = folder.mFullPath;
                     }
                 }
                 else
