@@ -53,6 +53,7 @@
         <Bochs_ISOFile>bin\Debug\net5.0\ProjectOrizonOS.iso</Bochs_ISOFile>
         <Bochs_CompileVBEMultiboot>False</Bochs_CompileVBEMultiboot>
         <Bochs_ExtractMapFile>True</Bochs_ExtractMapFile>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -91,6 +92,19 @@
       <EmbeddedResource Include="Resources\cursor.bmp" />
       <EmbeddedResource Include="Resources\wallpaper1024-768.bmp" />
       <EmbeddedResource Include="Resources\wallpaper1920-1080.bmp" />
+      <None Remove="Resources\zap-ext-light16.psf" />
+      <None Remove="Resources\PoOS-Logo.png" />
+      <None Remove="Resources\PoOS-Logo-White.png" />
+      <None Remove="Resources\PoOS-Logo-White_200x200.png" />
+      <None Remove="Resources\PoOS-Logo_1_30x30.png" />
+      <None Remove="Resources\PoOS-Logo_1_30x30.bmp" />
+      <EmbeddedResource Include="Resources\PoOS-Logo_30x30.bmp" />
+      <None Remove="Resources\PoOS-Logo-White_200x200.bmp" />
+      <EmbeddedResource Include="Resources\PoOS-Logo-White_200x200.bmp" />
+      <None Remove="Resources\PoOS-Logo-White.bmp" />
+      <EmbeddedResource Include="Resources\PoOS-Logo-White.bmp" />
+      <None Remove="Resources\PoOS-Logo.bmp" />
+      <EmbeddedResource Include="Resources\PoOS-Logo.bmp" />
     </ItemGroup>
 
     <ItemGroup>

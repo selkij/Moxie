@@ -12,5 +12,11 @@ namespace ProjectOrizonOS
 
         [ManifestResourceStream(ResourceName = "ProjectOrizonOS.Resources.cursor.bmp")]
         public static byte[] Cursor;
+        
+        [ManifestResourceStream(ResourceName = "ProjectOrizonOS.Resources.PoOS-Logo-White_200x200.bmp")]
+        public static byte[] LogoWhite200_200;
+        
+        [ManifestResourceStream(ResourceName = "ProjectOrizonOS.Resources.PoOS-Logo_30x30.bmp")]
+        public static byte[] Logo30_30;
     }
 }

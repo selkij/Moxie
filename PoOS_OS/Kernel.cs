@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Text;
 using System.Drawing;
+using Cosmos.Core.Memory;
 using Sys = Cosmos.System;
 using Cosmos.System.FileSystem.VFS;
 using Cosmos.System.Graphics;
 using Cosmos.System.Graphics.Fonts;
 using Cosmos.HAL;
+using ProjectOrizonOS.Interpreter;
 using ProjectOrizonOS.Shell;
 using ProjectOrizonOS.Shell.Network;
 using ProjectOrizonOS.Shell.Cmds;
@@ -19,12 +21,14 @@ namespace ProjectOrizonOS
         public string input { get; set; }
 
         //vFS
-        private Sys.FileSystem.CosmosVFS fs;
         public static string current_directory = @"0:\";
+        public static string current_volume = @"0:\";
 
-        //Shell
+        //Instantiate
         private ShellManager shell = new();
+        private Initializer init = new();
         private CommandManager cManager = new();
+        private skpParse skpParser = new();
 
         //Network
         private NetworkManager networkManager = new();
@@ -32,72 +36,75 @@ namespace ProjectOrizonOS
         //Graphics
         public static Canvas canvas;
         public static Bitmap wallpaperHD;
-        public static Bitmap wallpaper1024_768;
+        public static Bitmap wallpaper1024x768;
         public static Bitmap cursor;
+        public static Bitmap logoWhite300x300;
+        public static Bitmap logo30x30;
 
         //Pens
-        Pen topPen = new(Color.White);
-        Pen textPen = new(Color.Black);
-        Pen gray = new(Color.Gray);
+        Pen WhitePen = new(Color.White);
+        Pen BlackPen = new(Color.Black);
+        Pen GrayPen = new(Color.Gray);
 
         //Screen Res
-        public static uint screenWidth = 1920;
-        public static uint screenHeight = 1080;
+        public static uint screenWidth = 1280;
+        public static uint screenHeight = 800;
 
-        //Mouse state
-        public static bool pressed;
-
+        //FPS
+        private static int frames;
+        public static int fps;
+        public static int deltaT;
+        
         protected override void BeforeRun()
         {
-            // Initiating file system
-            #region vFS
-            try
+            //LoadFiles();
+            
+            if(ShellInfo.shellMode == 1)
             {
-                shell.WriteLine("Initiating file system...", type: 1);
-                fs = new Sys.FileSystem.CosmosVFS();
-                VFSManager.RegisterVFS(fs);
-                shell.WriteLine("File system initiated", type: 2);
-            }
-            catch (Exception ex)
-            {
-                shell.Write(ex.ToString(), type: 4);
-                Console.ReadKey();
-                Stop();
-            }
-            #endregion
-
-            #region DHCP
-            shell.WriteLine("Initiating Network connection via DHCP...", type: 1);
-            bool skip = true;
-            try
-            {
-                if(skip == false)
+                try
                 {
-                    networkManager.DCHPConnect();
-                } else
+                    canvas = FullScreenCanvas.GetFullScreenCanvas(new Mode((int) screenWidth, (int) screenHeight, ColorDepth.ColorDepth32)); canvas.Clear(Color.Black);
+                    //canvas.DrawImageAlpha(logoWhite300x300, (int) (canvas.Mode.Columns / 2 - logoWhite300x300.Width / 2), (int) (canvas.Mode.Rows / 2 - logoWhite300x300.Height / 2 - 89));
+                    canvas.DrawString("ProjectOrizonOS is loading, please wait...", PCScreenFont.Default, WhitePen, canvas.Mode.Columns / 2 - 89, canvas.Mode.Rows / 2 + 89);
+                    canvas.Display();
+                    
+                    init.vFS();
+                    init.DHCP();
+                }
+                catch (Exception ex)
                 {
-                    shell.WriteLine("Process Skipped!", type: 1);
-                }  
-                
+                    shell.Log(ex.ToString(), 3);
+                }
             }
-            catch (Exception ex)
+            else
             {
-                shell.WriteLine(ex.ToString(), type: 3);
+                init.vFS();
+                init.DHCP();
             }
-            #endregion
-
-            #region Booted Section
-            shell.WriteLine($"ProjectOrizonOS {ShellInfo.version} DEV channel booted.", type: 2);
-            //shell.WriteLine("Press a key to continue", ConsoleColor.Black, ConsoleColor.White);
-
-            //Console.ReadKey();
-            #endregion
+            
+            shell.Log($"ProjectOrizonOS {ShellInfo.version} DEV channel booted.", type: 2);
 
             #region Login section
-            if (ShellInfo.firstRunning && ShellInfo.shellMode == "textVGA")
+            if (VFSManager.FileExists(@"0:\cfg.skp"))
             {
+                try
+                {
+                    ShellInfo.firstRunning = false;
+                    skpParser.Execute(file:"cfg.skp");
+                } catch(Exception ex)
+                {
+                    shell.WriteLine(ex.ToString(), type: 4);
+                    Console.ReadKey();
+                    Sys.Power.Shutdown();
+                }
+            }
+            else
+            {
+                if(ShellInfo.shellMode == 1) 
+                    canvas.Disable();
+                    
                 shell.WriteLine("First time starting ProjectOrizonOS. Creating user...", type: 1);
-                shell.WriteLine("What is your name?", ConsoleColor.Gray, ConsoleColor.Black);
+                shell.WriteLine("What is your name?", ConsoleColor.Gray);
                 name = Console.ReadLine();
 
                 shell.WriteLine($"Are you sure? Is {name} correct? [Y/N O/N]");
@@ -109,7 +116,10 @@ namespace ProjectOrizonOS
                     case "y":
                     case "oui":
                     case "o":
-                        bool exception = false;
+
+                        shell.WriteLine("Machine name?", type: 1);
+                        string MName = Console.ReadLine();
+                        ShellInfo.machineName = MName;
 
                         try
                         {
@@ -120,21 +130,15 @@ namespace ProjectOrizonOS
 
                             if (cfg_file_stream.CanWrite)
                             {
-                                byte[] cfg_output = Encoding.ASCII.GetBytes($"name: {name}\nkeyMap: {ShellInfo.langSelected}");
+                                byte[] cfg_output = Encoding.ASCII.GetBytes($"name={name}\nkeyMap={ShellInfo.langSelected}\nmachineName={ShellInfo.machineName}");
                                 cfg_file_stream.Write(cfg_output, 0, cfg_output.Length);
                             }
 
-                            exception = true;
+                            ShellInfo.user = name;
                         }
                         catch (Exception ex)
                         {
                             shell.WriteLine(ex.ToString(), type: 3);
-                        }
-
-                        if (exception)
-                        {
-                            ShellInfo.user = name;
-                            ShellInfo.firstRunning = false;
                         }
 
                         shell.WriteLine("User created!", type: 2);
@@ -144,14 +148,17 @@ namespace ProjectOrizonOS
                     case "n":
                     case "non":
                         Console.Clear();
-                        shell.WriteLine("What is your name?", ConsoleColor.Gray, ConsoleColor.Black);
+                        shell.WriteLine("What is your name?", ConsoleColor.Gray);
                         name = Console.ReadLine();
                         break;
                     default:
                         ShellInfo.user = name;
-                        ShellInfo.firstRunning = false;
+                        shell.WriteLine("User created!", type: 2);
                         break;
                 }
+                
+                if(ShellInfo.shellMode == 1) 
+                    Sys.Power.Reboot();
             }
             #endregion
 
@@ -159,19 +166,12 @@ namespace ProjectOrizonOS
             Sys.MouseManager.ScreenHeight = screenHeight;
 
             Console.Clear();
-
-            if(ShellInfo.shellMode == "canvas")
-            {
-                LoadFiles();
-                canvas = FullScreenCanvas.GetFullScreenCanvas(new Mode((int)screenWidth, (int)screenHeight, ColorDepth.ColorDepth32));
-            }
         }
-
-        
 
         protected override void Run()
         {
-            if(ShellInfo.shellMode == "textVGA")
+            
+            if(ShellInfo.shellMode == 0)
             {
                 try
                 {
@@ -184,30 +184,34 @@ namespace ProjectOrizonOS
                 {
                     shell.WriteLine(ex.ToString(), type: 3);
                 }
-            } else if(ShellInfo.shellMode == "canvas")
+            } else if(ShellInfo.shellMode == 1)
             {
                 try
                 {
-                    canvas.Clear(Color.Black);
-
-                    if(screenWidth == 1920 && screenHeight == 1080)
+                    if (deltaT != RTC.Second)
                     {
-                        canvas.DrawImage(wallpaperHD, 0, 0);
-                    } else if(screenWidth == 1024 && screenHeight == 768)
-                    {
-                        canvas.DrawImage(wallpaper1024_768, 0, 0);
+                        fps = frames;
+                        frames = 0;
+                        deltaT = RTC.Second;
                     }
-                    canvas.DrawFilledRectangle(topPen, 0, 0, (int)screenWidth, 20);
-                    canvas.DrawFilledRectangle(gray, (int)screenWidth / 2 - 30, (int)screenHeight - 40, 100, 40);
 
-                    canvas.DrawString($"{RTC.Hour}:{RTC.Minute}.{RTC.Second}", PCScreenFont.Default, textPen, new Sys.Graphics.Point((int) screenWidth - 70, 3));
+                    frames++;
+                    
+                    canvas.Clear();
 
+                    canvas.DrawImage(wallpaperHD, 0, 0);
+                    canvas.DrawFilledRectangle(WhitePen, 0, 0, (int) screenWidth, 20);
+                    canvas.DrawFilledRectangle(WhitePen, 0, (int) screenHeight - 40, (int) screenWidth, 40);
+                    canvas.DrawString($"{RTC.Hour}:{RTC.Minute}.{RTC.Second}", PCScreenFont.Default, BlackPen, (int) screenWidth - 70, 3);
+                    canvas.DrawString("fps=" + fps, PCScreenFont.Default, WhitePen, 2, (int) screenHeight - 70);
+                    canvas.DrawImageAlpha(logo30x30, 5, (int) screenHeight - 50);
+                    
                     DrawCursor(Sys.MouseManager.X, Sys.MouseManager.Y);
-
+                    
                     canvas.Display();
                 } catch (Exception ex)
                 {
-                    mDebugger.Send(ex.ToString());
+                    Crash(canvas, ex.ToString());
                 }
             }
         }
@@ -220,7 +224,9 @@ namespace ProjectOrizonOS
         public static void LoadFiles()
         {
             wallpaperHD = new Bitmap(Files.WallpaperHD);
-            wallpaper1024_768 = new Bitmap(Files.Wallpaper1024_768);
+            wallpaper1024x768 = new Bitmap(Files.Wallpaper1024_768);
+            logoWhite300x300 = new Bitmap(Files.LogoWhite200_200);
+            logo30x30 = new Bitmap(Files.Logo30_30);
             cursor = new Bitmap(Files.Cursor);
         }
 
@@ -228,12 +234,18 @@ namespace ProjectOrizonOS
         {
             Console.ForegroundColor = ConsoleColor.White;
 
-            shell.Write("\n" + _name, ConsoleColor.Cyan, ConsoleColor.Black);
-            shell.Write("@", ConsoleColor.Gray, ConsoleColor.Black);
-            shell.Write("POrizonOS", ConsoleColor.Green, ConsoleColor.Black);
-            shell.Write("<", ConsoleColor.Gray, ConsoleColor.Black);
-            shell.Write(current_directory, ConsoleColor.Yellow, ConsoleColor.Black);
-            shell.Write(">", ConsoleColor.Gray, ConsoleColor.Black);
+            shell.Write("\n" + _name, ConsoleColor.Cyan);
+            shell.Write("@", ConsoleColor.Gray);
+            shell.Write("POrizonOS", ConsoleColor.Green);
+            shell.Write("<", ConsoleColor.Gray);
+            shell.Write(current_directory, ConsoleColor.Yellow);
+            shell.Write(">", ConsoleColor.Gray);
+        }
+
+        public void Crash(Canvas _canvas, String error)
+        {
+            _canvas.Clear(Color.Red);
+            _canvas.DrawString($"An error occured, kernel stopped: {error}", PCScreenFont.Default, WhitePen, 0, 0);
         }
     }
 }
