@@ -84,7 +84,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Cosmos.Build" Version="0.1.0-localbuild20220204074457">
+      <PackageReference Include="Cosmos.Build" Version="0.1.0-localbuild20220309095941">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
