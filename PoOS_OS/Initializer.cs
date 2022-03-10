@@ -34,7 +34,7 @@ namespace ProjectOrizonOS
         public void DHCP()
         {
             shell.Log("Initiating Network connection via DHCP...", type: 1);
-            bool skip = false;
+            bool skip = true;
             try
             {
                 if (skip == false)

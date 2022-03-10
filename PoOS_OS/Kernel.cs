@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Text;
 using System.Drawing;
-using Cosmos.Core.Memory;
 using Sys = Cosmos.System;
 using Cosmos.System.FileSystem.VFS;
+using Cosmos.HAL;
 using Cosmos.System.Graphics;
 using Cosmos.System.Graphics.Fonts;
-using Cosmos.HAL;
 using ProjectOrizonOS.Interpreter;
 using ProjectOrizonOS.Shell;
-using ProjectOrizonOS.Shell.Network;
 using ProjectOrizonOS.Shell.Cmds;
+using Canvas = ProjectOrizonOS.Libraries.Graphics.Canvas;
 
 namespace ProjectOrizonOS
 {
@@ -22,16 +21,12 @@ namespace ProjectOrizonOS
 
         //vFS
         public static string current_directory = @"0:\";
-        public static string current_volume = @"0:\";
 
         //Instantiate
         private ShellManager shell = new();
         private Initializer init = new();
         private CommandManager cManager = new();
         private skpParse skpParser = new();
-
-        //Network
-        private NetworkManager networkManager = new();
 
         //Graphics
         public static Canvas canvas;
@@ -41,39 +36,51 @@ namespace ProjectOrizonOS
         public static Bitmap logoWhite300x300;
         public static Bitmap logo30x30;
 
-        //Pens
-        Pen WhitePen = new(Color.White);
-        Pen BlackPen = new(Color.Black);
-        Pen GrayPen = new(Color.Gray);
-
         //Screen Res
-        public static uint screenWidth = 1280;
-        public static uint screenHeight = 800;
-
-        //FPS
-        private static int frames;
-        public static int fps;
-        public static int deltaT;
+        public static uint screenWidth = 1024;
+        public static uint screenHeight = 768;
         
         protected override void BeforeRun()
         {
-            //LoadFiles();
             
-            if(ShellInfo.shellMode == 1)
+        }
+
+        protected override void Run()
+        {
+            if(ShellInfo.shellMode == 0)
             {
                 try
                 {
-                    canvas = FullScreenCanvas.GetFullScreenCanvas(new Mode((int) screenWidth, (int) screenHeight, ColorDepth.ColorDepth32)); canvas.Clear(Color.Black);
-                    //canvas.DrawImageAlpha(logoWhite300x300, (int) (canvas.Mode.Columns / 2 - logoWhite300x300.Width / 2), (int) (canvas.Mode.Rows / 2 - logoWhite300x300.Height / 2 - 89));
-                    canvas.DrawString("ProjectOrizonOS is loading, please wait...", PCScreenFont.Default, WhitePen, canvas.Mode.Columns / 2 - 89, canvas.Mode.Rows / 2 + 89);
-                    canvas.Display();
+                    Start(name);
+
+                    input = Console.ReadLine();
+                    cManager.ExecuteCommand(input.Split(' '));
+                }
+                catch (Exception ex)
+                {
+                    shell.WriteLine(ex.ToString(), type: 3);
+                }
+            } else if(ShellInfo.shellMode == 1)
+            {
+                if(ShellInfo.shellMode == 1)
+            {
+                try
+                {
+                    LoadFiles();
+                    
+                    //TODO: Faire un dummy project pour tester
+                    Canvas canvas = new((int) screenWidth, (int) screenHeight, true);
+                    
+                    canvas.DrawBitmap( (int) (canvas.Width / 2 - logoWhite300x300.Width / 2), (int) (canvas.Height / 2 - logoWhite300x300.Height / 2 - 89), logoWhite300x300);
+                    canvas.DrawString(canvas.Width / 2 - 89, canvas.Height / 2 + 89, "ProjectOrizonOS is loading, please wait...", Color.White);
+                    canvas.Update();
                     
                     init.vFS();
                     init.DHCP();
                 }
                 catch (Exception ex)
                 {
-                    shell.Log(ex.ToString(), 3);
+                    shell.Log($"Failed Booting ProjectOrizonOS: {ex}", 3);
                 }
             }
             else
@@ -83,8 +90,7 @@ namespace ProjectOrizonOS
             }
             
             shell.Log($"ProjectOrizonOS {ShellInfo.version} DEV channel booted.", type: 2);
-
-            #region Login section
+            
             if (VFSManager.FileExists(@"0:\cfg.skp"))
             {
                 try
@@ -100,8 +106,8 @@ namespace ProjectOrizonOS
             }
             else
             {
-                if(ShellInfo.shellMode == 1) 
-                    canvas.Disable();
+                /*if (ShellInfo.shellMode == 1)
+                    canvas.Disable();*/
                     
                 shell.WriteLine("First time starting ProjectOrizonOS. Creating user...", type: 1);
                 shell.WriteLine("What is your name?", ConsoleColor.Gray);
@@ -160,65 +166,40 @@ namespace ProjectOrizonOS
                 if(ShellInfo.shellMode == 1) 
                     Sys.Power.Reboot();
             }
-            #endregion
 
             Sys.MouseManager.ScreenWidth = screenWidth;
             Sys.MouseManager.ScreenHeight = screenHeight;
-
-            Console.Clear();
-        }
-
-        protected override void Run()
-        {
             
-            if(ShellInfo.shellMode == 0)
-            {
-                try
+            Console.Clear();
+            
+            #region Run
+            while (true)
                 {
-                    Start(name);
-
-                    input = Console.ReadLine();
-                    cManager.ExecuteCommand(input.Split(' '));
-                }
-                catch (Exception ex)
-                {
-                    shell.WriteLine(ex.ToString(), type: 3);
-                }
-            } else if(ShellInfo.shellMode == 1)
-            {
-                try
-                {
-                    if (deltaT != RTC.Second)
+                    try
                     {
-                        fps = frames;
-                        frames = 0;
-                        deltaT = RTC.Second;
+                        canvas.Clear();
+
+                        canvas.DrawBitmap(0, 0, wallpaper1024x768);
+                        canvas.DrawFilledRectangle(0, 0, (int) screenWidth, 20, Color.White);
+                        canvas.DrawFilledRectangle(0, (int) screenHeight - 40, (int) screenWidth, 40, Color.White);
+                        canvas.DrawString((int) screenWidth - 70, 3, $"{RTC.Hour}:{RTC.Minute}.{RTC.Second}", Color.Black);
+                        canvas.DrawString(2, (int) screenHeight - 70, "fps=" + canvas.FPS, Color.White);
+                    
+                        DrawCursor(Sys.MouseManager.X, Sys.MouseManager.Y);
+                    
+                        canvas.Update();
+                    } catch (Exception ex)
+                    {
+                        Crash(canvas, ex.ToString());
                     }
-
-                    frames++;
-                    
-                    canvas.Clear();
-
-                    canvas.DrawImage(wallpaperHD, 0, 0);
-                    canvas.DrawFilledRectangle(WhitePen, 0, 0, (int) screenWidth, 20);
-                    canvas.DrawFilledRectangle(WhitePen, 0, (int) screenHeight - 40, (int) screenWidth, 40);
-                    canvas.DrawString($"{RTC.Hour}:{RTC.Minute}.{RTC.Second}", PCScreenFont.Default, BlackPen, (int) screenWidth - 70, 3);
-                    canvas.DrawString("fps=" + fps, PCScreenFont.Default, WhitePen, 2, (int) screenHeight - 70);
-                    canvas.DrawImageAlpha(logo30x30, 5, (int) screenHeight - 50);
-                    
-                    DrawCursor(Sys.MouseManager.X, Sys.MouseManager.Y);
-                    
-                    canvas.Display();
-                } catch (Exception ex)
-                {
-                    Crash(canvas, ex.ToString());
                 }
+            #endregion
             }
         }
 
         public static void DrawCursor(uint x, uint y)
         {
-            canvas.DrawImageAlpha(cursor, (int) x, (int) y);
+            canvas.DrawBitmap((int) x, (int) y, cursor);
         }
 
         public static void LoadFiles()
@@ -245,7 +226,15 @@ namespace ProjectOrizonOS
         public void Crash(Canvas _canvas, String error)
         {
             _canvas.Clear(Color.Red);
-            _canvas.DrawString($"An error occured, kernel stopped: {error}", PCScreenFont.Default, WhitePen, 0, 0);
+            _canvas.DrawBitmap((int) (canvas.Width / 2 - logoWhite300x300.Width / 2), (int) (canvas.Height / 2 - logoWhite300x300.Height / 2 - 89), logoWhite300x300);
+            _canvas.DrawString(5, 0, $"An error occured, kernel stopped: {error}", Color.White);
+            _canvas.DrawString(5, 5,"Press a button to reboot the system", Color.White);
+            
+            Cosmos.System.PCSpeaker.Beep();
+            Cosmos.System.PCSpeaker.Beep();
+            
+            Console.ReadKey();
+            Sys.Power.Reboot();
         }
     }
 }
