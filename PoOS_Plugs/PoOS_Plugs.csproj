@@ -1,9 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
+        <TargetFramework>net5.0</TargetFramework>
         <RootNamespace>ClassLibrary1</RootNamespace>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
@@ -13,7 +11,10 @@
       <PackageReference Include="IL2CPU.API" Version="0.1.0-localbuild20220311070325" />
     </ItemGroup>
 
+<<<<<<< Updated upstream
     <ItemGroup>
     	<ProjectReference Include="..\PoOS_OS\ProjectOrizonOS.csproj" />
 
+=======
+>>>>>>> Stashed changes
 </Project>

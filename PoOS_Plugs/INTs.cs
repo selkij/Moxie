@@ -1,4 +1,5 @@
-﻿using IL2CPU.API.Attribs;
+﻿using System;
+using IL2CPU.API.Attribs;
 using static Cosmos.Core.INTs;
 
 namespace PoOS_Plugs
@@ -13,7 +14,9 @@ namespace PoOS_Plugs
 
             unsafe
             {
-                byte* xAddress = (byte*) 0xFF0000;
+                byte* xAddress = (byte*) 0xB8000;
+                
+                Console.Clear();
                 
                 PutErrorString(0, 0, "ProjectOrizonOS crashed!");
                 PutErrorString(1, 0, "Please report the following error to the developer");
