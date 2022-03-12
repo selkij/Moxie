@@ -119,6 +119,7 @@
       </PackageReference>
       <PackageReference Include="Cosmos.Debug.Kernel" Version="0.1.0-localbuild20220210100104" />
       <PackageReference Include="Cosmos.System2" Version="0.1.0-localbuild20220210100104" />
+      <PlugsReference Include="$(MSBuildProjectDirectory)\..\PoOS_Plugs\bin\Debug\net5.0\PoOS_Plugs.dll" />
     </ItemGroup>
 
 </Project>
