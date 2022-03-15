@@ -5,8 +5,6 @@ namespace ProjectOrizonOS.Shell.Cmds.File
 {
     internal class cListDir
     {
-        private static ShellManager shell = new();
-
         public static void ListDir()
         {
             try
@@ -15,12 +13,12 @@ namespace ProjectOrizonOS.Shell.Cmds.File
 
                 foreach (var directoryEntry in directory_list)
                 {
-                    shell.WriteLine(directoryEntry.mName);
+                    Kernel.shell.WriteLine(directoryEntry.mName);
                 }
             }
             catch (Exception ex)
             {
-                shell.WriteLine(ex.ToString(), type: 3);
+                Kernel.shell.WriteLine(ex.ToString(), type: 3);
             }
         }
     }

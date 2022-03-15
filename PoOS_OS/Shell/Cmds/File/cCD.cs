@@ -6,8 +6,6 @@ namespace ProjectOrizonOS.Shell.Cmds.File
 {
     internal class cCD
     {
-        private static ShellManager shell = new();
-
         public static void CD(string aPath)
         {
             try
@@ -17,7 +15,7 @@ namespace ProjectOrizonOS.Shell.Cmds.File
                 {
                     if (aPath.StartsWith("\"") && aPath.EndsWith("\"")) 
                     {
-                        shell.WriteLine("Not implemented.",type: 3);
+                        Kernel.shell.WriteLine("Not implemented.",type: 3);
                     } else
                     {
                         Kernel.current_directory = folder.mFullPath;
@@ -27,14 +25,14 @@ namespace ProjectOrizonOS.Shell.Cmds.File
                 {
                     if (aPath != "..")
                     {
-                        shell.WriteLine("Please enter a valid path.", type: 3);
+                        Kernel.shell.WriteLine("Please enter a valid path.", type: 3);
                     }
                 }
 
             }
             catch (Exception ex)
             {
-                shell.WriteLine(ex.ToString(), type: 3);
+                Kernel.shell.WriteLine(ex.ToString(), type: 3);
             }
         }
     }

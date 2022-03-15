@@ -68,7 +68,7 @@ namespace ProjectOrizonOS.Core.GUI
                         pressed = false;
                         break;
                 }
-            
+
                 canvas.Update();     
             } catch (Exception ex)
             {

@@ -6,8 +6,6 @@ namespace ProjectOrizonOS.Shell.Cmds.File
 {
     internal class cRemoveFile
     {
-        private static ShellManager shell = new();
-
         public static void RemoveFile(string file)
         {
             try
@@ -16,7 +14,7 @@ namespace ProjectOrizonOS.Shell.Cmds.File
             }
             catch (Exception ex)
             {
-                shell.WriteLine(ex.ToString(), type: 3);
+                Kernel.shell.WriteLine(ex.ToString(), type: 3);
             }
         }
     }

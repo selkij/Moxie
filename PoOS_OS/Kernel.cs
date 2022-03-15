@@ -12,7 +12,7 @@ namespace ProjectOrizonOS
         public static string current_directory = @"0:\";
 
         //Instantiate
-        private ShellManager shell = new();
+        public static ShellManager shell = new();
         private Initializer init = new();
 
         public GuiManager guiManager = new();
@@ -42,11 +42,5 @@ namespace ProjectOrizonOS
         {
             guiManager.DrawGUI();
         }
-
-        
-
-        
-
-        
     }
 }

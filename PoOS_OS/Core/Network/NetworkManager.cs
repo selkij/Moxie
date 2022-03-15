@@ -10,7 +10,6 @@ namespace ProjectOrizonOS.Core.Network
 {
     internal class NetworkManager
     {
-        private ShellManager shell = new();
 
         public void DCHPConnect()
         {
@@ -22,7 +21,7 @@ namespace ProjectOrizonOS.Core.Network
                 xClient.Close();
             } catch (Exception ex)
             {
-                shell.WriteLine("DHCP Discover failed. Can't apply dynamic IPv4 address. " + ex.ToString(), type: 3);
+                Kernel.shell.WriteLine("DHCP Discover failed. Can't apply dynamic IPv4 address. " + ex.ToString(), type: 3);
             }
         }
 
@@ -34,14 +33,14 @@ namespace ProjectOrizonOS.Core.Network
 
                 IPConfig.Enable(nic, new Address(192, 168, 1, 69), new Address(255, 255, 255, 0), new Address(192, 168, 1, 254));
 
-                shell.WriteLine("Applied! IPv4: " + NetworkConfig.CurrentConfig.Value.IPAddress.ToString() + " subnet mask: " + NetworkConfig.CurrentConfig.Value.SubnetMask.ToString() + " gateway: " + NetworkConfig.CurrentConfig.Value.DefaultGateway.ToString());
+                Kernel.shell.WriteLine("Applied! IPv4: " + NetworkConfig.CurrentConfig.Value.IPAddress.ToString() + " subnet mask: " + NetworkConfig.CurrentConfig.Value.SubnetMask.ToString() + " gateway: " + NetworkConfig.CurrentConfig.Value.DefaultGateway.ToString());
             } catch (Exception ex)
             {
                 if(ex.Equals(typeof(IndexOutOfRangeException))) {
                     cIpConfig.Help();
                 }else
                 {
-                    shell.WriteLine(ex.ToString(), type: 3);
+                    Kernel.shell.WriteLine(ex.ToString(), type: 3);
                 }
             }
         }
