@@ -1,11 +1,12 @@
-﻿using Cosmos.HAL;
+﻿using System;
+using Cosmos.HAL;
 using Cosmos.System.Network.Config;
 using Cosmos.System.Network.IPv4;
 using Cosmos.System.Network.IPv4.UDP.DHCP;
+using ProjectOrizonOS.Shell;
 using ProjectOrizonOS.Shell.Cmds.Network;
-using System;
 
-namespace ProjectOrizonOS.Shell.Network
+namespace ProjectOrizonOS.Core.Network
 {
     internal class NetworkManager
     {

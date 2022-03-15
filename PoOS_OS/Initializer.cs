@@ -1,7 +1,7 @@
 ﻿using Cosmos.System.FileSystem.VFS;
 using ProjectOrizonOS.Shell;
-using ProjectOrizonOS.Shell.Network;
 using System;
+using ProjectOrizonOS.Core.Network;
 using Sys = Cosmos.System;
 
 namespace ProjectOrizonOS
@@ -34,7 +34,7 @@ namespace ProjectOrizonOS
         public void DHCP()
         {
             shell.Log("Initiating Network connection via DHCP...", type: 1);
-            bool skip = true;
+            bool skip = false;
             try
             {
                 if (skip == false)

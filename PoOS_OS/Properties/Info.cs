@@ -1,4 +1,4 @@
-﻿namespace ProjectOrizonOS.Shell
+﻿namespace ProjectOrizonOS.Properties
 {
     internal class ShellInfo
     {
@@ -8,6 +8,5 @@
         public static bool firstRunning = true;
         public static string user;
         public static string machineName;
-        public static int shellMode = 1; // 0 = VGA text mode | 1 = Graphic mode
     }
 }

@@ -35,6 +35,12 @@ namespace PoOS_Plugs
                     PutErrorChar(4, 29, xHex[(int)(lastKnownAddressValue & 0xF)]);
                 }
             }
+            
+            //lock up
+            while (true)
+            {
+                
+            }
         }
         
         private static void PutErrorChar(int line, int col, char c) {

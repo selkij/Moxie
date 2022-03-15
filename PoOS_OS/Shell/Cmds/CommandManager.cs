@@ -6,8 +6,8 @@ using Cosmos.System.FileSystem.VFS;
 using Cosmos.System.Network.Config;
 using System;
 using Cosmos.System.Network.IPv4.UDP.DHCP;
+using ProjectOrizonOS.Core.Network;
 using ProjectOrizonOS.Shell.Cmds.Network;
-using ProjectOrizonOS.Shell.Network;
 
 namespace ProjectOrizonOS.Shell.Cmds
 {

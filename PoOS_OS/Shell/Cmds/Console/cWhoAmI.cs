@@ -1,4 +1,5 @@
-﻿using ProjectOrizonOS.Shell;
+﻿using ProjectOrizonOS.Properties;
+using ProjectOrizonOS.Shell;
 
 namespace ProjectOrizonOS.Shell.Cmds.Console
 {

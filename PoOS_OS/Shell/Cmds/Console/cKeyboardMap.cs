@@ -1,6 +1,7 @@
 ﻿using Sys = Cosmos.System;
 using Cosmos.System.ScanMaps;
 using System;
+using ProjectOrizonOS.Properties;
 
 namespace ProjectOrizonOS.Shell.Cmds.Console
 {

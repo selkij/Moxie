@@ -3,6 +3,7 @@ using ProjectOrizonOS.Shell;
 using ProjectOrizonOS.Shell.Cmds.Console;
 using System;
 using System.IO;
+using ProjectOrizonOS.Properties;
 
 namespace ProjectOrizonOS.Interpreter
 {

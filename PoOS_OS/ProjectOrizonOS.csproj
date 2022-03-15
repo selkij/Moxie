@@ -109,7 +109,6 @@
 
     <ItemGroup>
       <Folder Include="Shell\Cmds\Console\" />
-      <Folder Include="Shell\Graphics\" />
     </ItemGroup>
 
     <ItemGroup>
