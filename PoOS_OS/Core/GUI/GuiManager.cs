@@ -21,6 +21,11 @@ namespace ProjectOrizonOS.Core.GUI
         public static Bitmap cursorImage;
         public static Bitmap logoWhite300x300;
         public static Bitmap logo30x30;
+        
+        //Buttons
+        public static Bitmap closeButton;
+        public static Bitmap maximizeButton;
+        public static Bitmap minimizeButton;
 
         public bool pressed;
         
@@ -83,6 +88,11 @@ namespace ProjectOrizonOS.Core.GUI
             logoWhite300x300 = new Bitmap(Files.LogoWhite200_200);
             logo30x30 = new Bitmap(Files.Logo30_30);
             cursorImage = new Bitmap(Files.Cursor);
+            
+            //Buttons
+            closeButton = new Bitmap(Files.CloseButton);
+            maximizeButton = new Bitmap(Files.MaximizeButton);
+            minimizeButton = new Bitmap(Files.MinimizeButton);
         }
         
         public void Crash(string error)

@@ -105,6 +105,12 @@
       <EmbeddedResource Include="Resources\PoOS-Logo-White.bmp" />
       <None Remove="Resources\PoOS-Logo.bmp" />
       <EmbeddedResource Include="Resources\PoOS-Logo.bmp" />
+      <None Remove="Resources\eva+icons+++fill+up-1324449862500850561_16.bmp" />
+      <EmbeddedResource Include="Resources\CloseButton.bmp" />
+      <None Remove="Resources\eva+icons+++fill+down-1324449857827393991_16.bmp" />
+      <EmbeddedResource Include="Resources\MinimizeButton.bmp" />
+      <None Remove="Resources\eva+icons+++fill+left-1324449861677441494_16.bmp" />
+      <EmbeddedResource Include="Resources\MaximizeButton.bmp" />
     </ItemGroup>
 
     <ItemGroup>

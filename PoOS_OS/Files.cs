@@ -18,5 +18,15 @@ namespace ProjectOrizonOS
         
         [ManifestResourceStream(ResourceName = "ProjectOrizonOS.Resources.PoOS-Logo_30x30.bmp")]
         public static byte[] Logo30_30;
+        
+        //Buttons
+        [ManifestResourceStream(ResourceName = "ProjectOrizonOS.Resources.CloseButton.bmp")]
+        public static byte[] CloseButton;
+        
+        [ManifestResourceStream(ResourceName = "ProjectOrizonOS.Resources.MaximizeButton.bmp")]
+        public static byte[] MaximizeButton;
+        
+        [ManifestResourceStream(ResourceName = "ProjectOrizonOS.Resources.MinimizeButton.bmp")]
+        public static byte[] MinimizeButton;
     }
 }
