@@ -93,4 +93,10 @@
       <PlugsReference Include="$(MSBuildProjectDirectory)\..\PoOS_Plugs\bin\Debug\net5.0\PoOS_Plugs.dll" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="MoonSharp.Interpreter">
+        <HintPath>C:\Users\kevan\OneDrive\Bureau\MoonSharp.Interpreter.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>

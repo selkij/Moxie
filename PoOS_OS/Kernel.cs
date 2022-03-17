@@ -5,7 +5,9 @@ using ProjectOrizonOS.Shell;
 using System.Text;
 using ProjectOrizonOS.Shell.Network;
 using ProjectOrizonOS.Shell.Cmds;
+using MoonSharp.Interpreter;
 using ProjectOrizonOS.Interpreter;
+
 
 namespace ProjectOrizonOS
 {
@@ -27,6 +29,10 @@ namespace ProjectOrizonOS
 
         protected override void BeforeRun()
         {
+            string script = "print(\"Hello World from MoonSharp Lua interpreter!\")";
+            DynValue res = Script.RunString(script);
+            shell.WriteLine(res.ToString());
+
             init.vFS();
             init.DHCP();
 
