@@ -47,7 +47,7 @@ namespace ProjectOrizonOS.Core.GUI
         {
             LoadFiles();
 
-            canvas = new((int) screenWidth, (int) screenHeight, false);
+            canvas = new((int) screenWidth, (int) screenHeight, true);
             
             desktop = new();
             cursor = new();
