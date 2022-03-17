@@ -6,22 +6,26 @@ using System.Text;
 using ProjectOrizonOS.Shell.Network;
 using ProjectOrizonOS.Shell.Cmds;
 using MoonSharp.Interpreter;
+using ProjectOrizonOS.Interpreter;
+
 
 namespace ProjectOrizonOS
 {
     public class Kernel : Sys.Kernel
     {
+        //User Properties
         public string name { get; set; }
         public string input { get; set; }
 
-        private Sys.FileSystem.CosmosVFS fs;
+        //vFS
         public static string current_directory = @"0:\";
+        public static string current_volume = @"0:\";
 
+        //Instantiate
         private ShellManager shell = new();
-
+        private Initializer init = new();
         private CommandManager cManager = new();
-
-        private NetworkManager networkManager = new();
+        private skpParse skpParser = new();
 
         protected override void BeforeRun()
         {
@@ -29,50 +33,32 @@ namespace ProjectOrizonOS
             DynValue res = Script.RunString(script);
             shell.WriteLine(res.ToString());
 
-            // Initiating file system
-            try
-            {
-                shell.WriteLine("Initiating file system...", type: 1);
-                fs = new Sys.FileSystem.CosmosVFS();
-                VFSManager.RegisterVFS(fs);
-            }
-            catch (Exception ex)
-            {
-                shell.Write(ex.ToString(), type: 4);
-                Console.ReadKey();
-                Stop();
-            }
-            shell.WriteLine("File system initiated", type: 2);
-
-
-            // Check if the network connection correctly ethablished via DHCP
-            shell.WriteLine("Initiating Network connection via DHCP...", type: 1);
-            bool skip = true;
-            try
-            {
-                if(skip == false)
-                {
-                    networkManager.DCHPConnect();
-                } else
-                {
-                    shell.WriteLine("Process Skipped!", type: 1);
-                }  
-                
-            }
-            catch (Exception ex)
-            {
-                shell.WriteLine(ex.ToString(), type: 3);
-            }
+            init.vFS();
+            init.DHCP();
 
             #region Booted Section
-            shell.WriteLine($"ProjectOrizonOS {ShellInfo.version} DEV channel booted.", type: 2);
-            shell.WriteLine("Press a key to continue", ConsoleColor.Black, ConsoleColor.White);
+            shell.Log($"ProjectOrizonOS {ShellInfo.version} DEV channel booted.", type: 2);
+            shell.WriteLine("\n Press a key to continue", ConsoleColor.Black, ConsoleColor.White);
 
             Console.ReadKey();
             Console.Clear();
             #endregion
 
             #region Login section
+            if (VFSManager.FileExists(@"0:\cfg.skp"))
+            {
+                try
+                {
+                    ShellInfo.firstRunning = false;
+                    skpParser.Execute(file:"cfg.skp");
+                } catch(Exception ex)
+                {
+                    shell.WriteLine(ex.ToString(), type: 4);
+                    Console.ReadKey();
+                    Sys.Power.Shutdown();
+                }
+            }
+
             if (ShellInfo.firstRunning)
             {
                 shell.WriteLine("First time starting ProjectOrizonOS. Creating user...", type: 1);
@@ -88,7 +74,10 @@ namespace ProjectOrizonOS
                     case "y":
                     case "oui":
                     case "o":
-                        bool exception = false;
+
+                        shell.WriteLine("Machine name?", type: 1);
+                        string MName = Console.ReadLine();
+                        ShellInfo.machineName = MName;
 
                         try
                         {
@@ -99,21 +88,15 @@ namespace ProjectOrizonOS
 
                             if (cfg_file_stream.CanWrite)
                             {
-                                byte[] cfg_output = Encoding.ASCII.GetBytes($"name: {name}\nkeyMap: {ShellInfo.langSelected}");
+                                byte[] cfg_output = Encoding.ASCII.GetBytes($"name={name}\nkeyMap={ShellInfo.langSelected}\nmachineName={ShellInfo.machineName}");
                                 cfg_file_stream.Write(cfg_output, 0, cfg_output.Length);
                             }
 
-                            exception = true;
+                            ShellInfo.user = name;
                         }
                         catch (Exception ex)
                         {
                             shell.WriteLine(ex.ToString(), type: 3);
-                        }
-
-                        if (exception)
-                        {
-                            ShellInfo.user = name;
-                            ShellInfo.firstRunning = false;
                         }
 
                         shell.WriteLine("User created!", type: 2);
@@ -128,9 +111,11 @@ namespace ProjectOrizonOS
                         break;
                     default:
                         ShellInfo.user = name;
-                        ShellInfo.firstRunning = false;
+                        shell.WriteLine("User created!", type: 2);
                         break;
                 }
+                
+                ShellInfo.firstRunning = false;
             }
             #endregion
 
@@ -141,7 +126,7 @@ namespace ProjectOrizonOS
         {
             try
             {
-                Start(name);
+                Start(ShellInfo.user);
 
                 input = Console.ReadLine();
                 cManager.ExecuteCommand(input.Split(' '));
@@ -156,12 +141,12 @@ namespace ProjectOrizonOS
         {
             Console.ForegroundColor = ConsoleColor.White;
 
-            shell.Write("\n" + _name, ConsoleColor.Cyan, ConsoleColor.Black);
+            shell.Write("\n" + _name, ConsoleColor.DarkGreen, ConsoleColor.Black);
             shell.Write("@", ConsoleColor.Gray, ConsoleColor.Black);
-            shell.Write("POrizonOS", ConsoleColor.Green, ConsoleColor.Black);
+            shell.Write(ShellInfo.machineName, ConsoleColor.Yellow, ConsoleColor.Black);
             shell.Write("<", ConsoleColor.Gray, ConsoleColor.Black);
-            shell.Write(current_directory, ConsoleColor.Yellow, ConsoleColor.Black);
-            shell.Write(">", ConsoleColor.Gray, ConsoleColor.Black);
+            shell.Write(current_directory, ConsoleColor.DarkBlue, ConsoleColor.Black);
+            shell.Write("> #", ConsoleColor.Gray, ConsoleColor.Black);
         }
     }
 }

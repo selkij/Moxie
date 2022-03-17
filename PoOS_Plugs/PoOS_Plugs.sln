@@ -1,9 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.32106.194
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoOS_Plugs", "PoOS_Plugs.csproj", "{7D3C9C30-FB4F-47A9-A6CC-0B0D35ED4C74}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoOS_Plugs", "PoOS_Plugs.csproj", "{D7EDA10D-AC04-42AB-AB09-2EFE58B1DA67}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +8,9 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7D3C9C30-FB4F-47A9-A6CC-0B0D35ED4C74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7D3C9C30-FB4F-47A9-A6CC-0B0D35ED4C74}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7D3C9C30-FB4F-47A9-A6CC-0B0D35ED4C74}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7D3C9C30-FB4F-47A9-A6CC-0B0D35ED4C74}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {4581E9E2-F4B9-45DB-9E63-7BB87F5E9649}
+		{D7EDA10D-AC04-42AB-AB09-2EFE58B1DA67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7EDA10D-AC04-42AB-AB09-2EFE58B1DA67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7EDA10D-AC04-42AB-AB09-2EFE58B1DA67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7EDA10D-AC04-42AB-AB09-2EFE58B1DA67}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

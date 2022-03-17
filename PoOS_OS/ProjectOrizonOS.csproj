@@ -14,7 +14,7 @@
         <IgnoreDebugStubAttribute>False</IgnoreDebugStubAttribute>
         <ISOFile>bin\Debug\net5.0\ProjectOrizonOS.iso</ISOFile>
         <CompileVBEMultiboot>False</CompileVBEMultiboot>
-        <ExtractMapFile>True</ExtractMapFile>
+        <ExtractMapFile>False</ExtractMapFile>
         <VMware_StackCorruptionDetectionEnabled>True</VMware_StackCorruptionDetectionEnabled>
         <VMware_StackCorruptionDetectionLevel>MethodFooters</VMware_StackCorruptionDetectionLevel>
         <VMware_Description>Use VMware Player or Workstation to deploy and debug.</VMware_Description>
@@ -84,14 +84,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Cosmos.Build" Version="0.1.0-localbuild20220204074457">
+      <PackageReference Include="Cosmos.Build" Version="0.1.0-localbuild20220309095941">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
-      <PackageReference Include="Cosmos.Core" Version="0.1.0-localbuild20220204074509" />
-      <PackageReference Include="Cosmos.Debug.Kernel" Version="0.1.0-localbuild20220204074509" />
-      <PackageReference Include="Cosmos.System2" Version="0.1.0-localbuild20220204074509" />
-
+      <PackageReference Include="Cosmos.Debug.Kernel" Version="0.1.0-localbuild20220210100104" />
+      <PackageReference Include="Cosmos.System2" Version="0.1.0-localbuild20220210100104" />
+      <PlugsReference Include="$(MSBuildProjectDirectory)\..\PoOS_Plugs\bin\Debug\net5.0\PoOS_Plugs.dll" />
     </ItemGroup>
 
     <ItemGroup>

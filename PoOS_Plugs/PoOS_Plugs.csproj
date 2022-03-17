@@ -1,7 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-  </PropertyGroup>
+<PropertyGroup>
+  <TargetFramework>net5.0</TargetFramework>
+  <RootNamespace>ClassLibrary1</RootNamespace>
+  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+</PropertyGroup>
 
+<ItemGroup>
+  <PackageReference Include="Cosmos.System2" Version="0.1.0-localbuild20220311070325" />
+  <PackageReference Include="IL2CPU.API" Version="0.1.0-localbuild20220311070325" />
+</ItemGroup>
 </Project>
