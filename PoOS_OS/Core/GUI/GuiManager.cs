@@ -1,20 +1,22 @@
 ﻿using System;
 using System.Drawing;
+using Cosmos.Core;
 using Sys = Cosmos.System;
 using Cosmos.System.Graphics;
 using ProjectOrizonOS.Application;
 using ProjectOrizonOS.Libraries.Graphics;
+using Bitmap = ProjectOrizonOS.Libraries.Graphics.Bitmap;
 using Canvas = ProjectOrizonOS.Libraries.Graphics.Canvas;
+using Color = ProjectOrizonOS.Libraries.Graphics.Color;
 
 namespace ProjectOrizonOS.Core.GUI
 {
     public class GuiManager
     {
         public static Canvas canvas;
-        public VBE vbe;
         
-        public static uint screenWidth = 1920;
-        public static uint screenHeight = 1080;
+        public static uint screenWidth = 1024;
+        public static uint screenHeight = 768;
         
         public static Bitmap wallpaperHD;
         public static Bitmap wallpaper1024x768;
@@ -34,6 +36,8 @@ namespace ProjectOrizonOS.Core.GUI
         
         WindowManager windowManager = new();
 
+        public App debug = new("Debug", AppType.TextWindow);
+
         public GuiManager()
         {
             
@@ -42,16 +46,15 @@ namespace ProjectOrizonOS.Core.GUI
         public void Initialize()
         {
             LoadFiles();
-            
-            vbe = new((int) screenWidth, (int) screenHeight);
-            canvas = new();
+
+            canvas = new((int) screenWidth, (int) screenHeight, false);
             
             desktop = new();
             cursor = new();
             
             cursor.Initialize(screenWidth, screenHeight);
             
-            AppManager.AddNewApp(new App("Debug", AppType.TextWindow));
+            AppManager.AddNewApp(debug);
         }
         
         public void DrawGUI()
@@ -97,9 +100,9 @@ namespace ProjectOrizonOS.Core.GUI
         
         public void Crash(string error)
         {
-            Canvas.Clear(Color.Red);
-            canvas.DrawBitmap((int) (Canvas.Width / 2 - logoWhite300x300.Width / 2), (int) (Canvas.Height / 2 - logoWhite300x300.Height / 2 - 89), logoWhite300x300);
-            Canvas.DrawString(5, 0, $"An error occured and kernel stopped: {error}", Color.White);
+            canvas.Clear(Color.Red);
+            canvas.DrawBitmap((int) (canvas.Width / 2 - logoWhite300x300.Width / 2), (int) (canvas.Height / 2 - logoWhite300x300.Height / 2 - 89), logoWhite300x300);
+            canvas.DrawString(5, 0, $"An error occured and kernel stopped: {error}", Color.White);
             
             Cosmos.System.PCSpeaker.Beep();
             Cosmos.System.PCSpeaker.Beep();

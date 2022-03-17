@@ -1,6 +1,7 @@
 ﻿using Cosmos.System.FileSystem.VFS;
 using ProjectOrizonOS.Shell;
 using System;
+using Cosmos.System.Network.Config;
 using ProjectOrizonOS.Core.Network;
 using Sys = Cosmos.System;
 
@@ -38,6 +39,7 @@ namespace ProjectOrizonOS
                 if (skip == false)
                 {
                     networkManager.DCHPConnect();
+                    Kernel.shell.Log("Etablished Network connection via DHCP IPv4: " + NetworkConfig.CurrentConfig.Value.IPAddress, 2);
                 }
                 else
                 {

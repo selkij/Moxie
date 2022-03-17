@@ -2,7 +2,7 @@
 
 namespace ProjectOrizonOS.Application
 {
-    class App
+    public class App
     {
         public string Name;
         public Window window;

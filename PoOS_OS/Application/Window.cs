@@ -1,7 +1,4 @@
-﻿using System.Drawing;
-using ProjectOrizonOS.Libraries.Graphics;
-
-namespace ProjectOrizonOS.Application
+﻿namespace ProjectOrizonOS.Application
 {
     public enum AppType
     {

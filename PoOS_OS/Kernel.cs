@@ -14,17 +14,15 @@ namespace ProjectOrizonOS
         //Instantiate
         public static ShellManager shell = new();
         private Initializer init = new();
-
-        public GuiManager guiManager = new();
-
+        public static GuiManager guiManager = new();
         private static Setup setup = new();
-
+        
         protected override void BeforeRun()
         {
             try
             {
-                init.vFS();
-                init.DHCP();
+                //init.vFS();
+                //init.DHCP();
             }
             catch (Exception ex)
             {
