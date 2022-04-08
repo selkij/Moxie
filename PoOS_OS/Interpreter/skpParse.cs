@@ -3,6 +3,7 @@ using ProjectOrizonOS.Shell;
 using ProjectOrizonOS.Shell.Cmds.Console;
 using System;
 using System.IO;
+using ProjectOrizonOS.Properties;
 
 namespace ProjectOrizonOS.Interpreter
 {
@@ -30,7 +31,7 @@ namespace ProjectOrizonOS.Interpreter
                             }
                         }catch(Exception ex)
                         {
-                            shell.WriteLine(ex.ToString() + " 1");
+                            shell.WriteLine(ex.ToString());
                         }
                         
                     } else if(line.StartsWith("keyMap"))

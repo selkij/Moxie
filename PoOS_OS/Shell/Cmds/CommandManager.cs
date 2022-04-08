@@ -6,14 +6,13 @@ using Cosmos.System.FileSystem.VFS;
 using Cosmos.System.Network.Config;
 using System;
 using Cosmos.System.Network.IPv4.UDP.DHCP;
+using ProjectOrizonOS.Core.Network;
 using ProjectOrizonOS.Shell.Cmds.Network;
-using ProjectOrizonOS.Shell.Network;
 
 namespace ProjectOrizonOS.Shell.Cmds
 {
     class CommandManager
     {
-        private ShellManager shell = new();
         private NetworkManager networkManager = new();
         public void ExecuteCommand(string[] cmd)
         {
@@ -91,7 +90,7 @@ namespace ProjectOrizonOS.Shell.Cmds
                 case "cat":
                     if (string.IsNullOrWhiteSpace(cmd[1]))
                     {
-                        shell.WriteLine("Please choose a file to output", type: 3);
+                        Kernel.shell.WriteLine("Please choose a file to output", type: 3);
                     }
                     else
                     {
@@ -106,15 +105,11 @@ namespace ProjectOrizonOS.Shell.Cmds
                 case "ipinfo":
                     try
                     {
-                        string ip = NetworkConfig.CurrentConfig.Value.IPAddress.ToString();
-                        if(ip != "<Object.ToString not yet implemented!>")
-                        {
-                            shell.WriteLine(ip);
-                        }
+                        Kernel.shell.WriteLine(NetworkConfig.CurrentConfig.Value.IPAddress.ToString());
                     }
                     catch (Exception ex)
                     {
-                        shell.WriteLine(ex.ToString(), type: 3);
+                        Kernel.shell.WriteLine(ex.ToString(), type: 3);
                     }
 
                     break;
@@ -131,7 +126,7 @@ namespace ProjectOrizonOS.Shell.Cmds
                 #endregion
 
                 default:
-                    shell.WriteLine("Unknown command. Please type \'help\' to see the commands", type: 3);
+                    Kernel.shell.WriteLine("Unknown command. Please type \'help\' to see the commands", type: 3);
                     break;
             }
         }

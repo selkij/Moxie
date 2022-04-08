@@ -2,7 +2,7 @@
 
 namespace ProjectOrizonOS.Shell
 {
-    internal class ShellManager
+    public class ShellManager
     {
 
         #region Write

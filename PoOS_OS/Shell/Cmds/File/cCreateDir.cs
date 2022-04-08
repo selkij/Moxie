@@ -6,8 +6,6 @@ namespace ProjectOrizonOS.Shell.Cmds.File
 {
     internal class cCreateDir
     {
-        private static ShellManager shell = new();
-
         public static void CreateDir(string file)
         {
             DirectoryEntry dir = VFSManager.GetDirectory(Kernel.current_directory);
@@ -18,7 +16,7 @@ namespace ProjectOrizonOS.Shell.Cmds.File
             }
             catch (Exception ex)
             {
-                shell.WriteLine(ex.ToString(), type: 3);
+                Kernel.shell.WriteLine(ex.ToString(), type: 3);
             }
         }
     }

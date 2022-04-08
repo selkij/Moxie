@@ -14,7 +14,7 @@
         <IgnoreDebugStubAttribute>False</IgnoreDebugStubAttribute>
         <ISOFile>bin\Debug\net5.0\ProjectOrizonOS.iso</ISOFile>
         <CompileVBEMultiboot>False</CompileVBEMultiboot>
-        <ExtractMapFile>False</ExtractMapFile>
+        <ExtractMapFile>True</ExtractMapFile>
         <VMware_StackCorruptionDetectionEnabled>True</VMware_StackCorruptionDetectionEnabled>
         <VMware_StackCorruptionDetectionLevel>MethodFooters</VMware_StackCorruptionDetectionLevel>
         <VMware_Description>Use VMware Player or Workstation to deploy and debug.</VMware_Description>
@@ -53,6 +53,7 @@
         <Bochs_ISOFile>bin\Debug\net5.0\ProjectOrizonOS.iso</Bochs_ISOFile>
         <Bochs_CompileVBEMultiboot>False</Bochs_CompileVBEMultiboot>
         <Bochs_ExtractMapFile>True</Bochs_ExtractMapFile>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -79,8 +80,41 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <None Remove="Kernel.cs~RF58f66af.TMP" />
+      <None Remove="Resources\cursor.bmp" />
+      <None Remove="Resources\DefaultWallpaper.bmp" />
+      <None Remove="Resources\wallpaper1024-768.bmp" />
+      <None Remove="Resources\wallpaper1920-1080.bmp" />
+      <None Remove="wp.bmp" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="Resources\cursor.bmp" />
+      <EmbeddedResource Include="Resources\wallpaper1024-768.bmp" />
+      <EmbeddedResource Include="Resources\wallpaper1920-1080.bmp" />
+      <None Remove="Resources\zap-ext-light16.psf" />
+      <None Remove="Resources\PoOS-Logo.png" />
+      <None Remove="Resources\PoOS-Logo-White.png" />
+      <None Remove="Resources\PoOS-Logo-White_200x200.png" />
+      <None Remove="Resources\PoOS-Logo_1_30x30.png" />
+      <None Remove="Resources\PoOS-Logo_1_30x30.bmp" />
+      <EmbeddedResource Include="Resources\PoOS-Logo_30x30.bmp" />
+      <None Remove="Resources\PoOS-Logo-White_200x200.bmp" />
+      <EmbeddedResource Include="Resources\PoOS-Logo-White_200x200.bmp" />
+      <None Remove="Resources\PoOS-Logo-White.bmp" />
+      <EmbeddedResource Include="Resources\PoOS-Logo-White.bmp" />
+      <None Remove="Resources\PoOS-Logo.bmp" />
+      <EmbeddedResource Include="Resources\PoOS-Logo.bmp" />
+      <None Remove="Resources\eva+icons+++fill+up-1324449862500850561_16.bmp" />
+      <EmbeddedResource Include="Resources\CloseButton.bmp" />
+      <None Remove="Resources\eva+icons+++fill+down-1324449857827393991_16.bmp" />
+      <EmbeddedResource Include="Resources\MinimizeButton.bmp" />
+      <None Remove="Resources\eva+icons+++fill+left-1324449861677441494_16.bmp" />
+      <EmbeddedResource Include="Resources\MaximizeButton.bmp" />
+    </ItemGroup>
+
+    <ItemGroup>
       <Folder Include="Shell\Cmds\Console\" />
-      <Folder Include="Shell\Graphics\" />
     </ItemGroup>
 
     <ItemGroup>

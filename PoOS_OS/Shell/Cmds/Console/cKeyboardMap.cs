@@ -1,13 +1,12 @@
 ﻿using Sys = Cosmos.System;
 using Cosmos.System.ScanMaps;
 using System;
+using ProjectOrizonOS.Properties;
 
 namespace ProjectOrizonOS.Shell.Cmds.Console
 {
     internal class cKeyboardMap
     {
-        private static ShellManager shell = new();
-
         public static void SetKeyboardMap(string keyMap)
         {
 
@@ -20,7 +19,7 @@ namespace ProjectOrizonOS.Shell.Cmds.Console
                         ShellInfo.langSelected = "en_US";
                     } else
                     {
-                        shell.WriteLine("The Keyboard mapping is already on en_US.",type: 3);
+                        Kernel.shell.WriteLine("The Keyboard mapping is already on en_US.",type: 3);
                     }
                     break;
 
@@ -32,7 +31,7 @@ namespace ProjectOrizonOS.Shell.Cmds.Console
                     }
                     else
                     {
-                        shell.WriteLine("The Keyboard mapping is already on fr_FR.", type: 3);
+                        Kernel.shell.WriteLine("The Keyboard mapping is already on fr_FR.", type: 3);
                     }
                     break;
 
@@ -44,12 +43,12 @@ namespace ProjectOrizonOS.Shell.Cmds.Console
                     }
                     else
                     {
-                        shell.WriteLine("The Keyboard mapping is already on en_DE.", type: 3);
+                        Kernel.shell.WriteLine("The Keyboard mapping is already on en_DE.", type: 3);
                     }
                     break;
 
                 default:
-                    shell.Write("Please enter a valid keyboard language. Example: \"en_US\"", type: 3);
+                    Kernel.shell.Write("Please enter a valid keyboard language. Example: \"en_US\"", type: 3);
                     break;
             }
         }
