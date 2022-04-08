@@ -3,8 +3,6 @@ using Cosmos.HAL;
 using Cosmos.System.Network.Config;
 using Cosmos.System.Network.IPv4;
 using Cosmos.System.Network.IPv4.UDP.DHCP;
-using ProjectOrizonOS.Shell;
-using ProjectOrizonOS.Shell.Cmds.Network;
 
 namespace ProjectOrizonOS.Core.Network
 {
@@ -33,15 +31,10 @@ namespace ProjectOrizonOS.Core.Network
 
                 IPConfig.Enable(nic, new Address(192, 168, 1, 69), new Address(255, 255, 255, 0), new Address(192, 168, 1, 254));
 
-                Kernel.shell.WriteLine("Applied! IPv4: " + NetworkConfig.CurrentConfig.Value.IPAddress.ToString() + " subnet mask: " + NetworkConfig.CurrentConfig.Value.SubnetMask.ToString() + " gateway: " + NetworkConfig.CurrentConfig.Value.DefaultGateway.ToString());
+                Kernel.shell.WriteLine("Applied! IPv4: " + NetworkConfig.CurrentConfig.Value.IPAddress + " subnet mask: " + NetworkConfig.CurrentConfig.Value.SubnetMask + " gateway: " + NetworkConfig.CurrentConfig.Value.DefaultGateway);
             } catch (Exception ex)
             {
-                if(ex.Equals(typeof(IndexOutOfRangeException))) {
-                    cIpConfig.Help();
-                }else
-                {
-                    Kernel.shell.WriteLine(ex.ToString(), type: 3);
-                }
+                Kernel.shell.WriteLine(ex.ToString(), type: 3);
             }
         }
     }

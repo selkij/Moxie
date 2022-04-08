@@ -67,7 +67,8 @@ namespace ProjectOrizonOS.Core
                         try
                         {
                             VFSManager.CreateFile(@"0:\SYSTEM\users.skp");
-                
+                            
+                            //For now it is broken and useless
                             /*User.User user = new User.User();
                             
                             user.AddUser(name);*/

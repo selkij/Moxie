@@ -1,20 +1,23 @@
-﻿using System.Drawing;
-using Cosmos.HAL;
-using ProjectOrizonOS.Libraries.Graphics;
+﻿using Cosmos.HAL;
 using ProjectOrizonOS.Properties;
+using ProjectOrizonOS.Resources;
 using Color = ProjectOrizonOS.Libraries.Graphics.Color;
 
 namespace ProjectOrizonOS.Core.GUI
 {
     public class Desktop
     {
+        private Color bgColor = new(254, 168, 127, 63);
+        
         public void Draw()
         {
             string time = $"{RTC.DayOfTheMonth} {RTC.Hour}:{RTC.Minute}.{RTC.Second}";
                         
-            GuiManager.canvas.Clear(new Color(254, 86, 20, 142));
+            GuiManager.canvas.Clear(bgColor);
 
-            //canvas.DrawBitmap(0, 0, wallpaper1024x768);
+            //GuiManager.canvas.DrawBitmap(0, 0, Files.Wallpaper1024X768);
+            
+            GuiManager.canvas.DrawBitmap((int) (GuiManager.canvas.Width / 2 - Files.LogoWhite300X300.Width / 2), (int) (GuiManager.canvas.Height / 2 - Files.LogoWhite300X300.Height / 2 - 89), Files.LogoWhite300X300);
                         
             //Top Bar
             GuiManager.canvas.DrawFilledRectangle(0, 0, (int) GuiManager.screenWidth, 20, 0, Color.White);

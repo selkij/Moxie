@@ -4,6 +4,12 @@ using Cosmos.Core;
 using System.Text;
 using System.IO;
 using System;
+using System.Runtime.Versioning;
+using Cosmos.System;
+using ProjectOrizonOS.Application;
+using ProjectOrizonOS.Core.GUI;
+using ProjectOrizonOS.Resources;
+using Global = Cosmos.Core.Global;
 
 namespace ProjectOrizonOS.Libraries.Graphics
 {
@@ -14,11 +20,12 @@ namespace ProjectOrizonOS.Libraries.Graphics
             this.Width = Width;
             this.Height = Height;
             Buffer = new int*[Width * Height];
-            
+
             if (UseVBE)
             {
                 VBE = new((ushort)Width, (ushort)Height, 32);
                 Update();
+                ShowCursor = true;
                 Mouse.ScreenWidth = (uint)Width;
                 Mouse.ScreenHeight = (uint)Height;
                 Mouse.X = (uint)Width / 2;
@@ -28,6 +35,7 @@ namespace ProjectOrizonOS.Libraries.Graphics
 
         public int Width, Height;
         public float AspectRatio;
+        public bool ShowCursor;
         public int*[] Buffer;
         public VBEDriver VBE;
         private DateTime LT;
@@ -78,19 +86,40 @@ namespace ProjectOrizonOS.Libraries.Graphics
         {
             DrawLine(X, Y, (int)(X + (Math.Cos(Math.PI * Angle / 180) * Radius)), (int)(X + (Math.Sin(Math.PI * Angle / 180) * Radius)), Color);
         }
+        public void DrawBezierLine(int X1, int Y1, int X2, int Y2, int X3, int Y3, Color Color, bool Initial = true, int N = 6)
+        {
+            // X2 and Y2 is where the curve should bend to.
+            if (Initial)
+            {
+                //DrawLine(X1, Y1, X2, Y2, Color.Black);
+                //DrawLine(X2, Y2, X3, Y3, Color.Black);
+            }
+
+            if (N > 0)
+            {
+                int X12 = (X1 + X2) / 2;
+                int Y12 = (Y1 + Y2) / 2;
+                int X23 = (X2 + X3) / 2;
+                int Y23 = (Y2 + Y3) / 2;
+                int X123 = (X12 + X23) / 2;
+                int Y123 = (Y12 + Y23) / 2;
+
+                DrawBezierLine(X1, Y1, X12, Y12, X123, Y123, Color, false, N - 1);
+                DrawBezierLine(X123, Y123, X23, Y23, X3, Y3, Color, false, N - 1);
+            }
+            else
+            {
+                DrawLine(X1, Y1, X2, Y2, Color);
+                DrawLine(X2, Y2, X3, Y3, Color);
+            }
+        }
 
         #endregion
 
         #region Rectangle
 
-        public void DrawRectangle(int X, int Y, int Width, int Height, int Radius, Color Color, bool Clamp = true)
+        public void DrawRectangle(int X, int Y, int Width, int Height, int Radius, Color Color)
         {
-            if (Clamp)
-            {
-                X = Math.Clamp(X, 0, this.Width - Width);
-                Y = Math.Clamp(Y, 0, this.Height - Height);
-            }
-
             if (Radius > 0)
             {
                 DrawCircle(X, Y, Radius, Color, 180, 270); // Top left
@@ -104,14 +133,8 @@ namespace ProjectOrizonOS.Libraries.Graphics
             DrawLine(X + Width, Y + Radius, Width + X, Y + Height - (Radius * 2), Color); // Right Line
         }
 
-        public void DrawFilledRectangle(int X, int Y, int Width, int Height, int Radius, Color Color, bool Clamp = true)
+        public void DrawFilledRectangle(int X, int Y, int Width, int Height, int Radius, Color Color)
         {
-            if (Clamp)
-            {
-                X = Math.Clamp(X, 0, this.Width - Width);
-                Y = Math.Clamp(Y, 0, this.Height - Height);
-            }
-
             if (Radius == 0)
             {
                 for (int IY = Y; IY < Y + Height; IY++)
@@ -144,14 +167,8 @@ namespace ProjectOrizonOS.Libraries.Graphics
 
         #region Circle
 
-        public void DrawCircle(int X, int Y, int Radius, Color Color, int StartAngle = 0, int EndAngle = 360, bool Clamp = true)
+        public void DrawCircle(int X, int Y, int Radius, Color Color, int StartAngle = 0, int EndAngle = 360)
         {
-            if (Clamp)
-            {
-                X = Math.Clamp(X, 0, Width - Radius);
-                Y = Math.Clamp(Y, 0, Height - Radius);
-            }
-
             if (Radius == 0 || StartAngle == EndAngle)
                 return;
 
@@ -164,20 +181,14 @@ namespace ProjectOrizonOS.Libraries.Graphics
             }
         }
 
-        public void DrawFilledCircle(int X, int Y, int Radius, Color Color, int StartAngle = 0, int EndAngle = 360, bool Clamp = true)
+        public void DrawFilledCircle(int X, int Y, int Radius, Color Color, int StartAngle = 0, int EndAngle = 360)
         {
-            if (Clamp)
-            {
-                X = Math.Clamp(X, 0, Width - Radius);
-                Y = Math.Clamp(Y, 0, Height - Radius);
-            }
-
             if (Radius == 0 || StartAngle == EndAngle)
                 return;
 
             for (int I = 0; I < Radius; I++)
             {
-                DrawCircle(X, Y, I, Color, StartAngle, EndAngle, false);
+                DrawCircle(X, Y, I, Color, StartAngle, EndAngle);
             }
         }
 
@@ -197,23 +208,17 @@ namespace ProjectOrizonOS.Libraries.Graphics
 
         #region Image
 
-        public void DrawBitmap(int X, int Y, Bitmap Bitmap, bool Clamp = true)
+        public void DrawBitmap(int X, int Y, Bitmap Bitmap)
         {
-            if (Clamp)
-            {
-                X = Math.Clamp(X, 0, Width - (int)Bitmap.Width);
-                Y = Math.Clamp(Y, 0, Height - (int)Bitmap.Height);
-            }
-
             for (int IX = 0; IX < Bitmap.Width; IX++)
             {
                 for (int IY = 0; IY < Bitmap.Height; IY++)
                     SetPixel(X + IX, Y + IY, new(Bitmap.rawData[(Bitmap.Width * IY) + IX]));
             }
         }
-        public void DrawBitmap(int X, int Y, int Width, int Height, Bitmap Bitmap, bool Clamp = true)
+        public void DrawBitmap(int X, int Y, int Width, int Height, Bitmap Bitmap)
         {
-            DrawBitmap(X, Y, new((uint)Width, (uint)Height, (byte[])(object)Bitmap.rawData, Bitmap.Depth), Clamp);
+            DrawBitmap(X, Y, new((uint)Width, (uint)Height, (byte[])(object)Bitmap.rawData, Bitmap.Depth));
         }
 
         #endregion
@@ -247,14 +252,8 @@ namespace ProjectOrizonOS.Libraries.Graphics
             public MemoryStream MS;
             public readonly static Font Default = new(8, 16, "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AAB4zMzM2MzGxsbMAAAAAAAA/sbGwMDAwMDAwAAAAAAAAAAA/mxsbGxsbGwAAAAAAAAA/sZgMBgwYMb+AAAAAAAAAAAAftjY2NjYcAAAAAAAAAAAZmZmZmZ8YGDAAAAAAAAAAHbcGBgYGBgYAAAAAAAAAH4YPGZmZjwYfgAAAAAAAAA4bMbG/sbGbDgAAAAAAAA4bMbGxmxsbGzuAAAAAAAAHjAYDD5mZmZmPAAAAAAAAAAAAH7b29t+AAAAAAAAAAAAAwZ+29vzfmDAAAAAAAAAHDBgYHxgYGAwHAAAAAAAAAB8xsbGxsbGxsYAAAAAAAAAAP4AAP4AAP4AAAAAAAAAAAAYGH4YGAAA/wAAAAAAAAAwGAwGDBgwAH4AAAAAAAAADBgwYDAYDAB+AAAAAAAADhsbGBgYGBgYGBgYGBgYGBgYGBgYGNjY2HAAAAAAAAAAABgYAH4AGBgAAAAAAAAAAAAAdtwAdtwAAAAAAAAAOGxsOAAAAAAAAAAAAAAAAAAAAAAAABgYAAAAAAAAAAAAAAAAAAAAGAAAAAAAAAAADwwMDAwM7GxsPBwAAAAAANhsbGxsbAAAAAAAAAAAAABw2DBgyPgAAAAAAAAAAAAAAAAAfHx8fHx8fAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==");
         }
-        public void DrawString(int X, int Y, string Text, Color Color, bool Clamp = true)
+        public void DrawString(int X, int Y, string Text, Color Color)
         {
-            if (Clamp)
-            {
-                X = Math.Clamp(X, 0, Width - (Font.Default.Width * Text.Length));
-                Y = Math.Clamp(Y, 0, Height - (Font.Default.Height * Text.Split('\n').Length));
-            }
-
             string[] Lines = Text.Split('\n');
             for (int Line = 0; Line < Lines.Length; Line++)
             {
@@ -301,6 +300,13 @@ namespace ProjectOrizonOS.Libraries.Graphics
                     Frames = 0;
                     LT = DateTime.Now;
                     Cosmos.Core.Memory.Heap.Collect();
+                }
+
+                if (ShowCursor)
+                {
+                    Mouse.X = (uint)Math.Clamp(Mouse.X, 0, Width - Files.Cursor.Width);
+                    Mouse.Y = (uint)Math.Clamp(Mouse.Y, 0, Height - Files.Cursor.Height);
+                    DrawBitmap((int)Mouse.X, (int)Mouse.Y, Files.Cursor);
                 }
 
                 Global.BaseIOGroups.VBE.LinearFrameBuffer.Copy((int[])(object)Buffer);

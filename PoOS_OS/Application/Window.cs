@@ -16,9 +16,12 @@
         {
             DrawFrame(OffsetX, OffsetY);
             DrawContent(OffsetX, OffsetY + 20);
+            DrawButtons(OffsetX, OffsetY);
         }
 
         protected abstract void DrawFrame(int x, int y);
         protected abstract void DrawContent(int x, int y);
+
+        protected abstract void DrawButtons(int x, int y);
     }
 }

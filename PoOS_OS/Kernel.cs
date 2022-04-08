@@ -1,6 +1,5 @@
 ﻿using System;
 using Sys = Cosmos.System;
-using ProjectOrizonOS.Core;
 using ProjectOrizonOS.Core.GUI;
 using ProjectOrizonOS.Shell;
 
@@ -15,13 +14,14 @@ namespace ProjectOrizonOS
         public static ShellManager shell = new();
         private Initializer init = new();
         public static GuiManager guiManager = new();
-        private static Setup setup = new();
         
         protected override void BeforeRun()
         {
             try
             {
-                //init.vFS();
+                //Not working on VirtualBox
+                init.vFS();
+                
                 //init.DHCP();
             }
             catch (Exception ex)
@@ -29,10 +29,8 @@ namespace ProjectOrizonOS
                 shell.Log($"Failed Booting ProjectOrizonOS: {ex}", 3);
             }
             
-            //setup.StartSetup();
-            
-            Console.Clear();
-            
+            GuiManager.canvas = new((int) GuiManager.screenWidth, (int) GuiManager.screenHeight, true);
+
             guiManager.Initialize();
         }
 

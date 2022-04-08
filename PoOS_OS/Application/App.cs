@@ -10,11 +10,15 @@ namespace ProjectOrizonOS.Application
         public App(string name, AppType type)
         {
             Name = name;
-            window.DisplayName = name;
 
             if (type == AppType.TextWindow)
             {
                 window = new TextWindow();
+                window.DisplayName = name;
+            } else if (type == AppType.GraphicsWindow)
+            {
+                window = new GraphicsWindow();
+                window.DisplayName = name;
             }
         }
     }

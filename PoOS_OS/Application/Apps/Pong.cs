@@ -1,19 +1,19 @@
 ﻿using ProjectOrizonOS.Core.GUI;
-using Color = ProjectOrizonOS.Libraries.Graphics.Color;
+using ProjectOrizonOS.Libraries.Graphics;
 using Files = ProjectOrizonOS.Resources.Files;
 
-namespace ProjectOrizonOS.Application.Interface
+namespace ProjectOrizonOS.Application.Apps
 {
-    public class TextWindow : Window
+    public class Pong : Window
     {
         public char[] Buffer = new char[80 * 25];
-        
-        public string DisplayName = "TextWindow";
 
+        private string DisplayName = "Pong!";
+        
         protected override void DrawFrame(int x, int y)
         {
             GuiManager.canvas.DrawFilledRectangle(x, y, Width, 20, 0, Color: Color.White);
-
+            
             DrawButtons(x, y);
             
             GuiManager.canvas.DrawString(x, y+2, DisplayName, Color.Black);
@@ -22,6 +22,9 @@ namespace ProjectOrizonOS.Application.Interface
         protected override void DrawContent(int x, int y)
         {
             GuiManager.canvas.DrawFilledRectangle(x, y, Width, Height, 0, Color.Black);
+            GuiManager.canvas.DrawFilledRectangle(x+5, Height / 2, 5, 25, 0, Color.White);
+            GuiManager.canvas.DrawFilledRectangle(x+5, Height / 2, 5, 25, 0, Color.White);
+            GuiManager.canvas.DrawFilledCircle(Width/2, Height/2, 10, Color.White);
         }
 
         protected override void DrawButtons(int x, int y)
