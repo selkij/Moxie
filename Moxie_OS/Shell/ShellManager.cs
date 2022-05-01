@@ -4,16 +4,48 @@ namespace Moxie.Shell
 {
     public class ShellManager
     {
+        #region Logs
+
+        /// <summary>
+        ///     Log only used for booting
+        /// </summary>
+        /// <param name="text">Text to output</param>
+        /// <param name="type">Type of log. 1:PROCESS 2:DONE 3:FAILED</param>
+        public void Log(string text, int type)
+        {
+            switch (type)
+            {
+                case 1:
+                    Write("[ ");
+                    Write("PROCESS", ConsoleColor.Blue);
+                    Write(" ] " + text + "\n");
+                    break;
+                case 2:
+                    Write("[ ");
+                    Write("DONE", ConsoleColor.Green);
+                    Write(" ] " + text + "\n");
+                    break;
+                case 3:
+                    Write("[ ");
+                    Write("FAILED", ConsoleColor.Red);
+                    Write(" ] " + text + "\n");
+                    break;
+            }
+        }
+
+        #endregion
 
         #region Write
+
         /// <summary>
-        /// Output text with color 
+        ///     Output text with color
         /// </summary>
         /// <param name="text">The text to output</param>
         /// <param name="foregroundColor">Change foreground text color</param>
         /// <param name="backgroundColor">Change background text color</param>
         /// <param name="type">Type of text 1:Process 2:Success 3:Error 4:Fatal</param>
-        public void Write(string text, ConsoleColor foregroundColor = ConsoleColor.White, ConsoleColor backgroundColor = ConsoleColor.Black, int type = 0)
+        public void Write(string text, ConsoleColor foregroundColor = ConsoleColor.White,
+            ConsoleColor backgroundColor = ConsoleColor.Black, int type = 0)
         {
             switch (type)
             {
@@ -76,13 +108,14 @@ namespace Moxie.Shell
         }
 
         /// <summary>
-        /// Output text with color 
+        ///     Output text with color
         /// </summary>
         /// <param name="text">The text to output</param>
         /// <param name="foregroundColor">Change foreground text color</param>
         /// <param name="backgroundColor">Change background text color</param>
         /// <param name="type">Type of text 1:Process 2:Success 3:Error 4:Fatal</param>
-        public void WriteLine(string text, ConsoleColor foregroundColor = ConsoleColor.White, ConsoleColor backgroundColor = ConsoleColor.Black, int type = 0)
+        public void WriteLine(string text, ConsoleColor foregroundColor = ConsoleColor.White,
+            ConsoleColor backgroundColor = ConsoleColor.Black, int type = 0)
         {
             switch (type)
             {
@@ -143,37 +176,27 @@ namespace Moxie.Shell
                     break;
             }
         }
-        #endregion
 
-        #region Logs
-
-        /// <summary>
-        /// Log only used for booting
-        /// </summary>
-        /// <param name="text">Text to output</param>
-        /// <param name="type">Type of log. 1:PROCESS 2:DONE 3:FAILED</param>
-        public void Log(string text, int type)
+        public void WriteChar(char character, ConsoleColor foregroundColor = ConsoleColor.White,
+            ConsoleColor backgroundColor = ConsoleColor.Black)
         {
-            switch(type)
-            {
-                case 1:
-                    Write("[ ");
-                    Write("PROCESS", ConsoleColor.Blue);
-                    Write(" ] " + text + "\n");
-                    break;
-                case 2:
-                    Write("[ ");
-                    Write("DONE", ConsoleColor.Green);
-                    Write(" ] " + text + "\n");
-                    break;
-                case 3:
-                    Write("[ ");
-                    Write("FAILED", ConsoleColor.Red);
-                    Write(" ] " + text + "\n");
-                    break;
-            }
+            Console.ForegroundColor = foregroundColor;
+            Console.BackgroundColor = backgroundColor;
+            Console.Write(character);
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.BackgroundColor = ConsoleColor.Black;
         }
-        #endregion
 
+        public void WriteLineChar(char character, ConsoleColor foregroundColor = ConsoleColor.White,
+            ConsoleColor backgroundColor = ConsoleColor.Black)
+        {
+            Console.ForegroundColor = foregroundColor;
+            Console.BackgroundColor = backgroundColor;
+            Console.Write(character + "\n");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.BackgroundColor = ConsoleColor.Black;
+        }
+
+        #endregion
     }
 }

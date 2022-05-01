@@ -7,5 +7,4 @@
             System.Console.Clear();
         }
     }
-    
 }

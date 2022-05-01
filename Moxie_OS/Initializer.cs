@@ -1,22 +1,22 @@
-﻿using Cosmos.System.FileSystem.VFS;
-using System;
+﻿using System;
+using Cosmos.System.FileSystem;
+using Cosmos.System.FileSystem.VFS;
 using Moxie.Core.Network;
 using Sys = Cosmos.System;
 
 namespace Moxie
 {
-    class Initializer
+    public class Initializer
     {
-
-        private Sys.FileSystem.CosmosVFS fs;
-        private NetworkManager networkManager = new();
+        public CosmosVFS fs;
+        public NetworkManager networkManager = new();
 
         public void vFS()
         {
             try
             {
                 Kernel.shell.Log("Initiating file system...", 1);
-                fs = new Sys.FileSystem.CosmosVFS();
+                fs = new CosmosVFS();
                 VFSManager.RegisterVFS(fs);
             }
             catch (Exception ex)
@@ -25,21 +25,18 @@ namespace Moxie
                 Console.ReadKey();
                 Sys.Power.Shutdown();
             }
+
             Kernel.shell.Log("File system initiated", 2);
         }
 
         public void DHCP()
         {
-            bool skip = false;
+            var skip = false;
 
             if (skip == false)
-            {
                 networkManager.DCHPConnect();
-            }
             else
-            {
-                Kernel.shell.Log("Process Skipped!", type: 2);
-            }
+                Kernel.shell.Log("Process Skipped!", 2);
         }
     }
 }

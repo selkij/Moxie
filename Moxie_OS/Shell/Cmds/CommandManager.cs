@@ -1,128 +1,88 @@
-﻿using Moxie.Shell.Cmds.Power;
-using Cosmos.System.Network.Config;
-using System;
-using Moxie.Core.Network;
-using Moxie.Shell.Cmds.Console;
+﻿using System.Collections.Generic;
+using System.Text;
 using Moxie.Shell.Cmds.File;
 
 namespace Moxie.Shell.Cmds
 {
     public class CommandManager
     {
-        private NetworkManager networkManager = new();
-        public void ExecuteCommand(string[] cmd)
+        public List<ICommand> Commands = new();
+
+        public void ExecuteCommand(string input)
         {
-            var cName = cmd[0];
+            var args = ParseCommandLine(input);
 
-            switch (cName)
-            {
-                #region Power
-                case "shutdown":
-                case "sd":
-                    cShutdown.Shutdown();
-                    break;
+            var name = args[0];
 
-                case "reboot":
-                case "rb":
-                    cReboot.Reboot();
-                    break;
-                #endregion
+            if (args.Count > 0) args.RemoveAt(0); //get only arguments
 
-                #region Console
-                case "clear":
-                case "cls":
-                    cClear.Clear();
-                    break;
+            foreach (var command in Commands)
+                if (command.ContainsCommand(name))
+                {
+                    if (args.Count == 0)
+                        command.Execute();
+                    else
+                        command.Execute(args);
+                }
+        }
 
-                case "whoami":
-                    cWhoAmI.WhoAmI();
-                    break;
+        public void RegisterCommands()
+        {
+            Commands.Add(new Cat(new[] { "cat" }));
+            Commands.Add(new ListDir(new[] { "ls" }));
+            Commands.Add(new Shutdown(new[] { "shutdown", "sd" }));
+            Commands.Add(new Reboot(new[] { "reboot", "rb" }));
+            Commands.Add(new CD(new[] { "cd" }));
+            Commands.Add(new CreateFile(new[] { "mkfile" }));
+            Commands.Add(new RemoveFile(new[] { "rmfile" }));
+            Commands.Add(new CreateDirectory(new[] { "mkdir" }));
+            Commands.Add(new RemoveDirectory(new[] { "rmdir" }));
+            Commands.Add(new DownloadFile(new[] { "dl" }));
+            Commands.Add(new TestFTP(new[] { "ftp" }));
+        }
 
-                case "echo":
-                    cEcho.Echo(cmd);
-                    break;
+        public static List<string> ParseCommandLine(string cmdLine)
+        {
+            var args = new List<string>();
+            if (string.IsNullOrWhiteSpace(cmdLine)) return args;
 
-                case "setKeyboardMap":
-                    cKeyboardMap.SetKeyboardMap(cmd[1]);
-                    break;
+            var currentArg = new StringBuilder();
+            var inQuotedArg = false;
 
-                case "help":
-                    cHelp.Help();
-                    break;
-                #endregion
-
-                #region File
-                case "cd":
-                    cCD.CD(cmd[1]);
-                    break;
-
-                case "listdir":
-                case "ls":
-                    cListDir.ListDir();
-                    break;
-
-                case "mkfile":
-                    cCreateFile.CreateFile(cmd[1]);
-                    break;
-
-                case "mkdir":
-                    cCreateDir.CreateDir(cmd[1]);
-                    break;
-
-                case "rmfile":
-                    cRemoveFile.RemoveFile(cmd[1]);
-                    break;
-
-                case "rmdir":
-                    cRemoveDir.RemoveDir(cmd[1]);
-                    break;
-
-                case "cat":
-                    if (string.IsNullOrWhiteSpace(cmd[1]))
+            for (var i = 0; i < cmdLine.Length; i++)
+                if (cmdLine[i] == '"')
+                {
+                    if (inQuotedArg)
                     {
-                        Kernel.shell.WriteLine("Please choose a file to output", type: 3);
+                        args.Add(currentArg.ToString());
+                        currentArg = new StringBuilder();
+                        inQuotedArg = false;
                     }
                     else
                     {
-                        cCat.Cat(cmd[1]);
+                        inQuotedArg = true;
                     }
-                    break;
-
-
-                #endregion
-
-                #region Network
-                case "ipinfo":
-                    try
+                }
+                else if (cmdLine[i] == ' ')
+                {
+                    if (inQuotedArg)
                     {
-                        string ip = NetworkConfig.CurrentConfig.Value.IPAddress.ToString();
-                        if(ip != "<Object.ToString not yet implemented!>")
-                        {
-                            Kernel.shell.WriteLine(ip);
-                        }
+                        currentArg.Append(cmdLine[i]);
                     }
-                    catch (Exception ex)
+                    else if (currentArg.Length > 0)
                     {
-                        Kernel.shell.WriteLine(ex.ToString(), type: 3);
+                        args.Add(currentArg.ToString());
+                        currentArg = new StringBuilder();
                     }
+                }
+                else
+                {
+                    currentArg.Append(cmdLine[i]);
+                }
 
-                    break;
+            if (currentArg.Length > 0) args.Add(currentArg.ToString());
 
-                case "ipconfig":
-                    if (!string.IsNullOrWhiteSpace(cmd[1]) && cmd[1] == "/dhcp")
-                    {
-                        networkManager.DCHPConnect();
-                    } else if (!string.IsNullOrWhiteSpace(cmd[1]) && !string.IsNullOrWhiteSpace(cmd[2]) && cmd[1] == "/manual")
-                    {
-                        networkManager.ManualConnect(cmd[2]);
-                    }
-                    break;
-                #endregion
-
-                default:
-                    Kernel.shell.WriteLine("Unknown command. Please type \'help\' to see the commands", type: 3);
-                    break;
-            }
+            return args;
         }
     }
 }

@@ -18,7 +18,7 @@ namespace Moxie_Plugs
                 
                 Console.Clear();
                 
-                PutErrorString(0, 0, "ProjectOrizonOS crashed!");
+                PutErrorString(0, 0, "Moxie crashed!");
                 PutErrorString(1, 0, "Please report the following error to the developer");
                 PutErrorString(3, 0, $"Error: CPU Exception x{xHex[(int)((ctx.Interrupt >> 4) & 0xF)]}{xHex[(int)(ctx.Interrupt & 0xF)]}");
                 
@@ -34,6 +34,12 @@ namespace Moxie_Plugs
                     PutErrorChar(4, 28, xHex[(int)((lastKnownAddressValue >> 4) & 0xF)]);
                     PutErrorChar(4, 29, xHex[(int)(lastKnownAddressValue & 0xF)]);
                 }
+            }
+            
+            // Lock up
+            while (true)
+            {
+                
             }
         }
         

@@ -20,7 +20,7 @@
         <VMware_Description>Use VMware Player or Workstation to deploy and debug.</VMware_Description>
         <VMware_Deployment>ISO</VMware_Deployment>
         <VMware_Launch>VMware</VMware_Launch>
-        <VMware_DebugEnabled>True</VMware_DebugEnabled>
+        <VMware_DebugEnabled>False</VMware_DebugEnabled>
         <VMware_DebugMode>Source</VMware_DebugMode>
         <VMware_IgnoreDebugStubAttribute>False</VMware_IgnoreDebugStubAttribute>
         <VMware_CosmosDebugPort>Serial: COM1</VMware_CosmosDebugPort>
@@ -129,6 +129,30 @@
         <USB_ISOFile>bin\Debug\net5.0\ProjectOrizonOS.iso</USB_ISOFile>
         <USB_CompileVBEMultiboot>False</USB_CompileVBEMultiboot>
         <USB_ExtractMapFile>False</USB_ExtractMapFile>
+        <Name>VMware User 001</Name>
+        <HyperV_ExtractMapFile>False</HyperV_ExtractMapFile>
+        <HyperV_CompileVBEMultiboot>False</HyperV_CompileVBEMultiboot>
+        <HyperV_ISOFile>bin\Debug\net5.0\ProjectOrizonOS.iso</HyperV_ISOFile>
+        <HyperV_EnableBochsDebug>True</HyperV_EnableBochsDebug>
+        <HyperV_StartCosmosGDB>False</HyperV_StartCosmosGDB>
+        <HyperV_EnableGDB>False</HyperV_EnableGDB>
+        <HyperV_VMwareEdition>Player</HyperV_VMwareEdition>
+        <HyperV_PxeInterface>192.168.0.8</HyperV_PxeInterface>
+        <HyperV_VisualStudioDebugPort>Pipe: CosmosSerial</HyperV_VisualStudioDebugPort>
+        <HyperV_CosmosDebugPort>Serial: COM1</HyperV_CosmosDebugPort>
+        <HyperV_IgnoreDebugStubAttribute>False</HyperV_IgnoreDebugStubAttribute>
+        <HyperV_DebugMode>Source</HyperV_DebugMode>
+        <HyperV_DebugEnabled>False</HyperV_DebugEnabled>
+        <HyperV_Launch>HyperV</HyperV_Launch>
+        <HyperV_Deployment>ISO</HyperV_Deployment>
+        <HyperV_Description>Use Hyper-V to deploy and debug.</HyperV_Description>
+        <HyperV_Name>VMware User 001</HyperV_Name>
+        <HyperV_StackCorruptionDetectionLevel>MethodFooters</HyperV_StackCorruptionDetectionLevel>
+        <HyperV_StackCorruptionDetectionEnabled>True</HyperV_StackCorruptionDetectionEnabled>
+        <VMware_Name>VMware User 001</VMware_Name>
+        <USB_Name>VMware User 001</USB_Name>
+        <HyperV_StartBochsDebugGui>False</HyperV_StartBochsDebugGui>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -136,9 +160,9 @@
         <StartCosmosGDB>False</StartCosmosGDB>
         <VisualStudioDebugPort>Pipe: Cosmos\Serial</VisualStudioDebugPort>
         <CosmosDebugPort>Serial: COM1</CosmosDebugPort>
-        <Launch>VMware</Launch>
-        <Profile>VMware</Profile>
-        <Description>Use VMware Player or Workstation to deploy and debug.</Description>
+        <Launch>None</Launch>
+        <Profile>ISO</Profile>
+        <Description>Creates a bootable ISO image which can be burned to a DVD. After running the selected project, an explorer window will open containing the ISO file. The ISO file can then be burned to a CD or DVD and used to boot a physical or virtual system.</Description>
         <PxeInterface>192.168.0.8</PxeInterface>
         <DebugEnabled>False</DebugEnabled>
         <VMWareEdition>Player</VMWareEdition>
@@ -148,25 +172,27 @@
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-      <Optimize>True</Optimize>
+        <Optimize>True</Optimize>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-      <Optimize>False</Optimize>
+        <Optimize>False</Optimize>
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Shell\Cmds\Console\" />
+        <Folder Include="Shell\Cmds\Console\"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Cosmos.Build" Version="0.1.0-localbuild20220309095941">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      </PackageReference>
-      <PackageReference Include="Cosmos.Debug.Kernel" Version="0.1.0-localbuild20220210100104" />
-      <PackageReference Include="Cosmos.System2" Version="0.1.0-localbuild20220210100104" />
-      <PlugsReference Include="$(MSBuildProjectDirectory)\..\Moxie_Plugs\bin\Debug\net5.0\Moxie_Plugs.dll" />
+        <PlugsReference Include="$(MSBuildProjectDirectory)\..\Moxie_Plugs\bin\Debug\net5.0\Moxie_Plugs.dll"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Cosmos.Build" Version="0.1.0-localbuild">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Cosmos.System2" Version="0.1.0-localbuild"/>
     </ItemGroup>
 
 </Project>
